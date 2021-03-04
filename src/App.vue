@@ -16,8 +16,7 @@
       </v-card>
     </v-dialog>
 
-    <v-app-bar
-        app color="white" flat>
+    <v-app-bar app flat>
       <v-container class="py-0 fill-height">
         <v-btn class="mr-2" text to="/">
           Home
@@ -62,14 +61,18 @@
         </v-btn>
       </v-card>
     </v-dialog>
-    <v-main v-else
-        class="grey lighten-3">
+    <v-main v-else>
       <v-container>
         <router-view />
       </v-container>
     </v-main>
   </v-app>
 </template>
+
+<style>
+  html {
+  }
+</style>
 
 <script>
   export default {
