@@ -66,9 +66,11 @@
     export default {
         components: { ShipInfo },
         chimera: {
-            user: {
-                url: '/users/Stumblinbear',
-                interval: 1000 * 60
+            user() {
+                return {
+                    url: '/users/' + this.$store.state.username,
+                    interval: 1000 * 60
+                }
             },
             ships: {
                 url: '/game/ships',

@@ -7,9 +7,11 @@
 <script>
     export default {
         chimera: {
-            user: {
-                url: '/users/Stumblinbear',
-                interval: 1000 * 10
+            user() {
+                return {
+                url: '/users/' + this.$store.state.username,
+                interval: 1000 * 60
+                }
             }
         }
     }

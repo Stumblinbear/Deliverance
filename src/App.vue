@@ -16,56 +16,62 @@
       </v-card>
     </v-dialog>
 
-    <v-app-bar app flat>
-      <v-container class="py-0 fill-height">
-        <v-btn class="mr-2" text to="/">
-          Home
-        </v-btn>
-        <v-btn class="mr-2" text to="/ships">
-          Ships
-        </v-btn>
-        <v-btn class="mr-2" text to="/market">
-          Market
-        </v-btn>
-        <v-btn class="mr-2" text to="/locations">
-          Locations
-        </v-btn>
-
-        <v-spacer />
-      
-        <v-progress-circular v-if="$chimera.$loading"
-          class="mr-3"
-          color="primary"
-          indeterminate
-          size="24"
-          width="2" />
-
-        <v-chip to="/loans">
-          {{ user.data ? user.data.user.credits : 'N/A' }} Credits
-        </v-chip>
-      </v-container>
-    </v-app-bar>
-
-    <v-dialog v-if="!$store.state.token"
+    <v-dialog v-if="!$store.state.username || !$store.state.token"
         :value="true" persistent max-width="350">
       <v-card class="pa-5">
         <v-text-field
-          v-model="token"
-          label="SpaceTraders API Token"
+          v-model="username"
+          label="Username"
           outlined />
-          
+        <v-text-field
+          v-model="token"
+          label="API Token"
+          outlined />
+
         <v-btn
             depressed block color="primary"
-            @click="$store.dispatch('SET_TOKEN', token)">
-          Set Token
+            @click="$store.dispatch('SET_AUTH', [ username, token ])">
+          Set Username / Token
         </v-btn>
       </v-card>
     </v-dialog>
-    <v-main v-else>
-      <v-container>
-        <router-view />
-      </v-container>
-    </v-main>
+    <template v-else>
+      <v-app-bar app flat>
+        <v-container class="py-0 fill-height">
+          <v-btn class="mr-2" text to="/">
+            Home
+          </v-btn>
+          <v-btn class="mr-2" text to="/ships">
+            Ships
+          </v-btn>
+          <v-btn class="mr-2" text to="/market">
+            Market
+          </v-btn>
+          <v-btn class="mr-2" text to="/locations">
+            Locations
+          </v-btn>
+
+          <v-spacer />
+        
+          <v-progress-circular v-if="$chimera.$loading"
+            class="mr-3"
+            color="primary"
+            indeterminate
+            size="24"
+            width="2" />
+
+          <v-chip to="/loans">
+            {{ user.data ? user.data.user.credits : 'N/A' }} Credits
+          </v-chip>
+        </v-container>
+      </v-app-bar>
+
+      <v-main>
+        <v-container>
+          <router-view />
+        </v-container>
+      </v-main>
+    </template>
   </v-app>
 </template>
 
@@ -82,11 +88,13 @@
         interval: 1000 * 60
       },
 
-      user: {
-        url: '/users/Stumblinbear',
-        interval: 1000 * 30
+      user() {
+        return {
+          url: '/users/' + this.$store.state.username,
+          interval: 1000 * 30
+        }
       }
     },
-    data: () => ({ token: '' })
+    data: () => ({ username: '', token: '' })
   }
 </script>
