@@ -16,7 +16,7 @@
                 Omicron Eridani
             </div>
 
-            <pre v-if="systems">
+            <pre v-if="systems.data">
                 {{ systems.data.systems }}
             </pre>
         </v-container>
