@@ -1,56 +1,58 @@
 <template>
-    <v-alert v-if="ships.error"
-            prominent type="error">
-      {{ ships }}
-    </v-alert>
-    <v-row v-else>
-        <v-col v-if="!ships.data">
-            <v-row>
-                <v-col cols="12">
-                    <v-list-item>
-                        <v-list-item-avatar>
-                            <v-skeleton-loader type="avatar" />
-                        </v-list-item-avatar>
-                        <v-list-item-content>
-                            <v-skeleton-loader type="heading" />
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-col>
+    <v-container>
+        <v-alert v-if="ships.error"
+                prominent type="error">
+        {{ ships }}
+        </v-alert>
+        <v-row v-else>
+            <v-col v-if="!ships.data">
+                <v-row>
+                    <v-col cols="12">
+                        <v-list-item>
+                            <v-list-item-avatar>
+                                <v-skeleton-loader type="avatar" />
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-skeleton-loader type="heading" />
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-col>
 
-                <v-col v-for="i in 4" :key="i"
-                        cols="12" sm="6" md="4">
-                    <ship-info />
-                </v-col>
-            </v-row>
-        </v-col>
-        <v-col v-else-if="ships.data.ships.length == 0">
-            <v-card>
-                <v-card-text>
-                    There are no ships available.
-                </v-card-text>
-            </v-card>
-        </v-col>
-        <v-col v-else>
-            <v-row v-for="(manufacturer, i) in manufacturers"
-                    :key="'manufacturer-' + i">
-                <v-col cols="12">
-                    <v-list-item>
-                        <v-list-item-avatar rounded="0">
-                            <v-img :src="'/assets/manufacturers/' + manufacturer.name.toLowerCase() + '.png'" />
-                        </v-list-item-avatar>
-                        <v-list-item-content>
-                            <v-list-item-title>{{ manufacturer.name }}</v-list-item-title>
-                            <v-list-item-subtitle>{{ manufacturer.info }}</v-list-item-subtitle>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-col>
-                <v-col v-for="ship in manufacturer.ships" :key="ship.type"
-                        cols="12" sm="6" md="4">
-                    <ship-info :ship="ship" />
-                </v-col>
-            </v-row>
-        </v-col>
-    </v-row>
+                    <v-col v-for="i in 4" :key="i"
+                            cols="12" sm="6" md="4">
+                        <ship-info />
+                    </v-col>
+                </v-row>
+            </v-col>
+            <v-col v-else-if="ships.data.ships.length == 0">
+                <v-card>
+                    <v-card-text>
+                        There are no ships available.
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col v-else>
+                <v-row v-for="(manufacturer, i) in manufacturers"
+                        :key="'manufacturer-' + i">
+                    <v-col cols="12">
+                        <v-list-item>
+                            <v-list-item-avatar rounded="0">
+                                <v-img :src="'/assets/manufacturers/' + manufacturer.name.toLowerCase() + '.png'" />
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-title>{{ manufacturer.name }}</v-list-item-title>
+                                <v-list-item-subtitle>{{ manufacturer.info }}</v-list-item-subtitle>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-col>
+                    <v-col v-for="ship in manufacturer.ships" :key="ship.type"
+                            cols="12" sm="6" md="4">
+                        <ship-info :ship="ship" />
+                    </v-col>
+                </v-row>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script>

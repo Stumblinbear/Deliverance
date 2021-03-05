@@ -44,11 +44,11 @@
           <v-btn class="mr-2" text to="/ships">
             Ships
           </v-btn>
-          <v-btn class="mr-2" text to="/market">
-            Market
-          </v-btn>
           <v-btn class="mr-2" text to="/locations">
             Locations
+          </v-btn>
+          <v-btn class="mr-2" text to="/market">
+            Market
           </v-btn>
 
           <v-spacer />
@@ -67,9 +67,7 @@
       </v-app-bar>
 
       <v-main>
-        <v-container>
-          <router-view />
-        </v-container>
+        <router-view />
       </v-main>
     </template>
   </v-app>
