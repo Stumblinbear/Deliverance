@@ -6,11 +6,7 @@
         <v-card-text class="pb-0">
             <v-row align="center">
                 <v-col class="shrink">
-                    <div v-if="SHIPS[ship.type]"
-                            class="ship-img">
-                        <div v-for="(part, i) in SHIPS[ship.type]" :key="'part-' + i"
-                            class="ship-part" :style="tile(...part)" />
-                    </div>
+                    <ship-image :type="ship.type" />
                 </v-col>
                 <v-col>
                     {{ ship.type }}
@@ -49,74 +45,57 @@
             </v-chip>
         </v-list-item>
 
-        <v-card-actions class="align-self-end">
+        <v-card-actions>
             <v-chip>
-                {{ minimumPrice }} Credits
+                {{ ship.cargo.length }} in Cargo
             </v-chip>
 
             <v-divider class="ml-2 mr-5" />
             
             <v-btn
                     depressed color="primary"
-                    :loading="!user.data"
-                    :disabled="!user.data || minimumPrice > user.data.user.credits">
-                {{ ship.purchaseLocations ? 'Purchase' : 'Sell' }}
+                    @click="reveal = true">
+                View Cargo
             </v-btn>
         </v-card-actions>
+
+        <v-expand-transition>
+            <v-card
+                v-if="reveal"
+                class="transition-fast-in-fast-out v-card--reveal"
+                style="height: calc(100% - 56px);"
+            >
+                
+                <v-card-actions class="pt-3">
+                    <v-btn text v-if="ship.purchaseLocations.length > 3">
+                        View All
+                    </v-btn>
+
+                    <v-spacer />
+                    
+                    <v-btn text @click="reveal = false">
+                        Return
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-expand-transition>
     </v-card>
 </template>
 
 <style scoped>
-    .ship-img {
-        position: relative;
-        width: 32px;
-        height: 32px;
-        
-        filter: drop-shadow(0 0 0px rgba(0, 0, 0, .6));
-
-        transition: .3s ease-in-out;
-    }
-
-    .ship-img:hover {
-        filter: drop-shadow(0 5px 0px rgba(0, 0, 0, .3));
-
-        transform: translateY(-10px) scale(2);
-    }
-
-    .ship-part {
+    .v-card--reveal {
+        bottom: 0;
+        opacity: 1 !important;
         position: absolute;
-        top: 0;
-        left: 0;
-
         width: 100%;
-        height: 100%;
-
-        background-image: url('/assets/ships.png');
-        background-repeat: no-repeat;
-
-        -ms-interpolation-mode: nearest-neighbor;
-        image-rendering: crisp-edges;
-        image-rendering: pixelated;
     }
 </style>
 
 <script>
-    const SHIPS = {
-        'EM-MK-II': [ [ 0, 3, 0, 0 ], [ 0, 4, 0, 0 ], [ 8, 6, 0, -7 ], [ 1, 1, 0, -5 ] ],
-        'EM-MK-III': [ [ 5, 3, 0, 0 ], [ 0, 5, 0, 4 ], [ 7, 6, 0, -7 ], [ 2, 1, 0, 0 ] ],
-        
-        'GR-MK-I': [ [ 2, 1, 0, 0 ], [ 2, 4, 0, 2 ], [ 13, 0, 0, 0 ] ],
-        'GR-MK-II': [ [ 5, 1, 0, 0 ], [ 3, 4, 0, -2 ], [ 14, 1, 0, -5 ] ],
-        'GR-MK-III': [ [ 4, 5, 0, 4 ], [ 3, 2, 0, 0 ], [ 15, 0, 0, 2 ] ],
-        
-        'JW-MK-I': [ [ 2, 4, 0, 0 ], [ 2, 6, 0, -6 ], [ 8, 0, 0, 0 ] ],
-        'JW-MK-II': [ [ 3, 4, 0, 2 ], [ 1, 6, 0, -3 ], [ 3, 6, 0, -10 ], [ 7, 0, 0, 0 ] ],
-        
-        'ZA-MK-II': [ [ 9, 3, 0, 0 ], [ 2, 5, 0, -1 ], [ 13, 0, 0, -3 ] ],
-        'ZA-MK-III': [ [ 8, 3, 0, -3 ], [ 2, 5, 0, 1 ], [ 15, 0, 0, 0 ] ],
-    };
+    import ShipImage from '@/components/ShipImage.vue';
 
     export default {
+        components: { ShipImage },
         props: {
             ship: {
                 type: Object
@@ -131,15 +110,38 @@
                 }
             }
         },
-        data: () => ({ SHIPS }),
+        data: () => ({
+            reveal: false,
+            loading: false
+        }),
         computed: {
             minimumPrice() {
                 return this.ship.purchaseLocations.reduce((acc, loc) => (!acc || loc.price < acc ? loc.price : acc), null);
+            },
+            purchaseList() {
+                return [ null, null, null ].map((v, i) => {
+                    return this.ship.purchaseLocations[i] ?? null;
+                })
             }
         },
         methods: {
-            tile(u, v, x, y) {
-                return 'background-position: ' + (-u * 32) + 'px ' + (-v * 32) + 'px; top:' + y + 'px; left: ' + x + 'px';
+            async purchaseShip(location) {
+                this.loading = true;
+
+                try {
+                    await this.axios.post('/users/' + this.$store.state.username + '/ships', {
+                        type: this.ship.type,
+                        location
+                    });
+
+                    // Cache busting. Force a reload of the endpoints.
+                    await this.user.reload(true);
+                } catch(e) {
+                    console.error(e);
+                }
+
+                this.reveal = false;
+                this.loading = false;
             }
         }
     }

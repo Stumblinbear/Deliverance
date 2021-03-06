@@ -1,11 +1,11 @@
 <template>
     <v-container>
-        <v-alert v-if="ships.error"
+        <v-alert v-if="user.error"
                 prominent type="error">
-        {{ ships }}
+            {{ ships }}
         </v-alert>
         <v-row v-else>
-            <v-col v-if="!ships.data">
+            <v-col v-if="!user.data">
                 <v-row>
                     <v-col cols="12">
                         <v-list-item>
@@ -24,49 +24,47 @@
                     </v-col>
                 </v-row>
             </v-col>
-            <v-col v-else-if="ships.data.ships.length == 0">
+            <v-col v-else-if="user.data.user.ships.length == 0">
                 <v-card>
                     <v-card-text>
-                        There are no ships available.
+                        You have no ships in your fleet.
                     </v-card-text>
                 </v-card>
             </v-col>
-            <v-col v-else>
-                <v-row v-for="(manufacturer, i) in manufacturers"
-                        :key="'manufacturer-' + i">
-                    <v-col cols="12">
-                        <v-list-item>
-                            <v-list-item-avatar rounded="0">
-                                <v-img :src="'/assets/manufacturers/' + manufacturer.name.toLowerCase() + '.png'" />
-                            </v-list-item-avatar>
-                            <v-list-item-content>
-                                <v-list-item-title>{{ manufacturer.name }}</v-list-item-title>
-                                <v-list-item-subtitle>{{ manufacturer.info }}</v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-col>
-                    <v-col v-for="ship in manufacturer.ships" :key="ship.type"
-                            cols="12" sm="6" md="4">
-                        <ship-info :ship="ship" />
-                    </v-col>
-                </v-row>
+            <v-col v-else
+                    v-for="(location, i) in locations" :key="'location-' + i"
+                    cols="12" md="6">
+                <v-card class="mb-3">
+                    <v-list-item>
+                        <v-list-item-avatar rounded="0">
+                            <sun :scale=".3" />
+                        </v-list-item-avatar>
+                        <v-list-item-content>
+                            <v-list-item-title class="headline">{{ location.id }}</v-list-item-title>
+                        </v-list-item-content>
+                        <v-list-item-action>
+                            <v-btn small depressed color="primary" :to="'/systems/' + location.id">
+                                View
+                            </v-btn>
+                        </v-list-item-action>
+                    </v-list-item>
+
+                    <v-divider />
+
+                    <ship-list-item v-for="(ship, j) in location.ships" :key="'location-' + i + '-' + j"
+                        :ship="ship" />
+                </v-card>
             </v-col>
         </v-row>
     </v-container>
 </template>
 
 <script>
-    import ShipInfo from '@/components/ShipInfo.vue';
-
-    const MANUFACTURERS = {
-        'ELECTRUM': { info: 'Specializing in quick, agile fighter crafts. \'Cause you\'ve got a need for speed.' },
-        'GRAVAGER': { info: 'Take \'yer shit where \'yer shit need t\' be took.' },
-        'JACKSHAW': { info: 'Spacecraft at affordable rates. (disclaimer: not responsible for spontneous combustion)' },
-        'ZETRA': { info: 'Balanced spaceships at unbalanced prices.' },
-    };
+    import Sun from '@/components/Sun.vue';
+    import ShipListItem from '@/components/ShipListItem.vue';
 
     export default {
-        components: { ShipInfo },
+        components: { Sun, ShipListItem },
         chimera: {
             user() {
                 return {
@@ -74,43 +72,34 @@
                     url: '/users/' + this.$store.state.username,
                     interval: 1000 * 60
                 }
-            },
-            ships: {
-                key: 'ships',
-                url: '/game/ships',
-                interval: 1000 * 60
             }
         },
         computed: {
-            manufacturers() {
-                const manufacturers = [];
+            locations() {
+                const locations = [];
 
-                let manufacturer = null;
-                for(let ship of [ ...this.ships.data.ships ].sort((a, b) => a.type.localeCompare(b.type))) {
-                    if(manufacturer && ship.manufacturer != manufacturer.name) {
-                        manufacturers.push(manufacturer);
-                        manufacturer = null;
+                let location = null;
+                for(let ship of [ ...this.user.data.user.ships ].sort((a, b) => a.type.localeCompare(b.type))) {
+                    if(location && ship.location != location.name) {
+                        locations.push(location);
+                        location = null;
                     }
 
-                    if(manufacturer == null) {
-                        const id = ship.manufacturer.toUpperCase();
-
-                        manufacturer = {
-                            id,
-                            name: ship.manufacturer,
-                            info: MANUFACTURERS[id].info,
+                    if(location == null) {
+                        location = {
+                            id: ship.location,
                             ships: [ ]
                         };
                     }
 
-                    manufacturer.ships.push(ship);
+                    location.ships.push(ship);
                 }
 
-                if(manufacturer != null) {
-                    manufacturers.push(manufacturer);
+                if(location != null) {
+                    locations.push(location);
                 }
 
-                return manufacturers;
+                return locations;
             }
         }
     }

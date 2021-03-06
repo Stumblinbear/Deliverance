@@ -47,7 +47,7 @@
           <v-btn class="mr-2" text to="/systems">
             Systems
           </v-btn>
-          <v-btn class="mr-2" text to="/market">
+          <v-btn class="mr-2" text to="/market/ships">
             Market
           </v-btn>
 
@@ -72,11 +72,6 @@
     </template>
   </v-app>
 </template>
-
-<style>
-  html {
-  }
-</style>
 
 <script>
   export default {
