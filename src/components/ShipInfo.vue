@@ -71,7 +71,18 @@
         position: relative;
         width: 32px;
         height: 32px;
+        
+        filter: drop-shadow(0 0 0px rgba(0, 0, 0, .6));
+
+        transition: .3s ease-in-out;
     }
+
+    .ship-img:hover {
+        filter: drop-shadow(0 5px 0px rgba(0, 0, 0, .3));
+
+        transform: translateY(-10px) scale(2);
+    }
+
     .ship-part {
         position: absolute;
         top: 0;
