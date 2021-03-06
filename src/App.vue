@@ -82,6 +82,7 @@
   export default {
     chimera: {
       status: {
+        key: 'status',
         url: '/game/status',
         interval: 1000 * 60
       },
