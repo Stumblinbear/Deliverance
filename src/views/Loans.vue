@@ -43,7 +43,11 @@
                         <v-card-actions>
                             <v-divider class="ml-2 mr-5" />
                             
-                            <v-btn depressed color="primary">
+                            <v-btn
+                                    depressed color="primary"
+                                    :disabled="loan.repaymentAmount > user.data.user.credits"
+                                    :loading="loading"
+                                    @click="repayLoan(loan.id)">
                                 Repay Loan
                             </v-btn>
                         </v-card-actions>
@@ -92,7 +96,11 @@
 
                             <v-divider class="ml-2 mr-5" />
                             
-                            <v-btn depressed color="primary">
+                            <v-btn
+                                    depressed color="primary"
+                                    :disabled="!user.data || user.data.user.loans.some(userLoan => userLoan.type == loan.type)"
+                                    :loading="loading"
+                                    @click="acceptLoan(loan.type)">
                                 Accept Loan
                             </v-btn>
                         </v-card-actions>
@@ -115,6 +123,39 @@
             loans: {
                 url: '/game/loans',
                 interval: 1000 * 60
+            }
+        },
+        data: () => ({ loading: false }),
+        methods: {
+            async acceptLoan(type) {
+                this.loading = true;
+
+                try {
+                    await this.axios.post('/users/' + this.$store.state.username + '/loans', {
+                        type
+                    });
+
+                    await this.user.reload();
+                    await this.loans.reload();
+                } catch(e) {
+                    console.error(e);
+                }
+                
+                this.loading = false;
+            },
+            async repayLoan(id) {
+                this.loading = true;
+
+                try {
+                    await this.axios.put('/users/' + this.$store.state.username + '/loans/' + id);
+
+                    await this.user.reload();
+                    await this.loans.reload();
+                } catch(e) {
+                    console.error(e);
+                }
+                
+                this.loading = false;
             }
         }
     }
