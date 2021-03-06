@@ -51,12 +51,15 @@
 
         <v-card-actions class="align-self-end">
             <v-chip>
-                {{ ship.purchaseLocations.reduce((acc, loc) => (!acc || loc.price &lt; acc ? loc.price : acc), null) }} Credits
+                {{ minimumPrice }} Credits
             </v-chip>
 
             <v-divider class="ml-2 mr-5" />
             
-            <v-btn depressed color="primary">
+            <v-btn
+                    depressed color="primary"
+                    :loading="!user.data"
+                    :disabled="!user.data || minimumPrice > user.data.user.credits">
                 {{ ship.purchaseLocations ? 'Purchase' : 'Sell' }}
             </v-btn>
         </v-card-actions>
@@ -108,7 +111,21 @@
                 type: Object
             }
         },
+        chimera: {
+            user() {
+                return {
+                    key: 'user',
+                    url: '/users/' + this.$store.state.username,
+                    interval: 1000 * 60
+                }
+            }
+        },
         data: () => ({ SHIPS }),
+        computed: {
+            minimumPrice() {
+                return this.ship.purchaseLocations.reduce((acc, loc) => (!acc || loc.price < acc ? loc.price : acc), null);
+            }
+        },
         methods: {
             tile(u, v, x, y) {
                 return 'background-position: ' + (-u * 32) + 'px ' + (-v * 32) + 'px; top:' + y + 'px; left: ' + x + 'px';
