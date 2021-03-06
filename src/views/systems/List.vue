@@ -13,7 +13,7 @@
         <div v-else>
             <v-card v-for="(system, i) in systems.data.systems" :key="'system-' + i"
                     class="mt-4">
-                <v-card-text class="pb-0">
+                <v-card-text>
                     <v-row align="center">
                         <v-col class="shrink">
                             <sun :scale=".3" />
@@ -31,6 +31,8 @@
                     </v-row>
                 </v-card-text>
 
+                <v-divider />
+
                 <v-row
                         align="center" justify="space-around"
                         no-gutters class="pa-5">
@@ -46,8 +48,8 @@
 </template>
 
 <script>
-    import Sun from '../../components/Sun.vue';
-    import LocationImage from '../../components/LocationImage.vue';
+    import Sun from '@/components/Sun.vue';
+    import LocationImage from '@/components/LocationImage.vue';
 
     export default {
         components: { Sun, LocationImage },

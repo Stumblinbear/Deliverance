@@ -43,8 +43,8 @@
 </style>
 
 <script>
-    import Sun from '../../components/Sun.vue';
-    import LocationImage from '../../components/LocationImage.vue';
+    import Sun from '@/components/Sun.vue';
+    import LocationImage from '@/components/LocationImage.vue';
 
     export default {
         components: { Sun, LocationImage },
