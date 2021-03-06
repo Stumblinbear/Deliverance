@@ -57,7 +57,7 @@
             <v-divider class="ml-2 mr-5" />
             
             <v-btn depressed color="primary">
-                Purchase
+                {{ ship.purchaseLocations ? 'Purchase' : 'Sell' }}
             </v-btn>
         </v-card-actions>
     </v-card>

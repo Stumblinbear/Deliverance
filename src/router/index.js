@@ -9,9 +9,13 @@ const routes = [
     name: 'Home',
     component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
   }, {
-    path: '/locations',
-    name: 'Locations',
-    component: () => import(/* webpackChunkName: "locations" */ '../views/Locations.vue')
+    path: '/systems',
+    name: 'System List',
+    component: () => import(/* webpackChunkName: "systems" */ '../views/systems/List.vue')
+  }, {
+    path: '/systems/:id',
+    name: 'System View',
+    component: () => import(/* webpackChunkName: "systems" */ '../views/systems/View.vue')
   }, {
     path: '/ships',
     name: 'Ships',

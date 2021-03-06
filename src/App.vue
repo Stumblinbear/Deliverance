@@ -44,8 +44,8 @@
           <v-btn class="mr-2" text to="/ships">
             Ships
           </v-btn>
-          <v-btn class="mr-2" text to="/locations">
-            Locations
+          <v-btn class="mr-2" text to="/systems">
+            Systems
           </v-btn>
           <v-btn class="mr-2" text to="/market">
             Market
