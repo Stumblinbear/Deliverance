@@ -70,11 +70,13 @@
         chimera: {
             user() {
                 return {
+                    key: 'user',
                     url: '/users/' + this.$store.state.username,
                     interval: 1000 * 60
                 }
             },
             ships: {
+                key: 'ships',
                 url: '/game/ships',
                 interval: 1000 * 60
             }

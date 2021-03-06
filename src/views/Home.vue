@@ -9,8 +9,9 @@
         chimera: {
             user() {
                 return {
-                url: '/users/' + this.$store.state.username,
-                interval: 1000 * 60
+                    key: 'user',
+                    url: '/users/' + this.$store.state.username,
+                    interval: 1000 * 60
                 }
             }
         }

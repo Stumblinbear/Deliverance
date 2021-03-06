@@ -53,6 +53,7 @@
         components: { Sun, LocationImage },
         chimera: {
             systems: {
+                key: 'systems',
                 url: '/game/systems',
                 // Highly doubtful that this will change minute-to-minute, but update it just in case
                 interval: 1000 * 60 * 5

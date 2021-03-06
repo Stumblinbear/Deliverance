@@ -51,6 +51,7 @@
         chimera: {
             locations() {
                 return {
+                    key: 'system-' + this.$route.params.id,
                     url: '/game/systems/' + this.$route.params.id + '/locations'
                 }
             }

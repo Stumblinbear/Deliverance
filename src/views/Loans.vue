@@ -116,11 +116,13 @@
         chimera: {
             user() {
                 return {
+                    key: 'user',
                     url: '/users/' + this.$store.state.username,
                     interval: 1000 * 60
                 }
             },
             loans: {
+                key: 'loans',
                 url: '/game/loans',
                 interval: 1000 * 60
             }
@@ -135,8 +137,9 @@
                         type
                     });
 
-                    await this.user.reload();
-                    await this.loans.reload();
+                    // Cache busting. Force a reload of the endpoints.
+                    await this.user.reload(true);
+                    await this.loans.reload(true);
                 } catch(e) {
                     console.error(e);
                 }
@@ -149,8 +152,9 @@
                 try {
                     await this.axios.put('/users/' + this.$store.state.username + '/loans/' + id);
 
-                    await this.user.reload();
-                    await this.loans.reload();
+                    // Cache busting. Force a reload of the endpoints.
+                    await this.user.reload(true);
+                    await this.loans.reload(true);
                 } catch(e) {
                     console.error(e);
                 }

@@ -88,6 +88,7 @@
 
       user() {
         return {
+          key: 'user',
           url: '/users/' + this.$store.state.username,
           interval: 1000 * 30
         }
