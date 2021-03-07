@@ -85,8 +85,7 @@
                         <v-card>
                             <v-list-item two-line v-if="locations.data">
                                 <v-list-item-avatar rounded="0">
-                                    <location-image v-if="locations.data"
-                                        :location="locations.data.locations.find(loc => loc.symbol == location.symbol)" />
+                                    <location-image :location="locations.data.locations.find(loc => loc.symbol == location.symbol)" />
                                 </v-list-item-avatar>
                                 <v-list-item-content>
                                     <v-list-item-title class="headline">{{ locations.data.locations.find(loc => loc.symbol == location.symbol).name }}</v-list-item-title>
