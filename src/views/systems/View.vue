@@ -14,7 +14,7 @@
                     no-gutters>
                 <sun />
                 
-                <v-col v-for="(location, j) in locations.data.locations" :key="'location-' + i + '-' + j"
+                <v-col v-for="(location, j) in locations.data.locations" :key="'location-' + j"
                         class="text-center">
                     <location-image :location="location" class="mx-auto" />
                     <div class="overline mt-2">{{ location.symbol }}</div>
@@ -23,7 +23,7 @@
         </v-sheet>
 
         <v-container>
-            <div class="text-h3 mb-4">
+            <div class="text-h3 mb-8">
                 Omicron Eridani
             </div>
 
@@ -55,26 +55,46 @@
                         You have no ships in your fleet.
                     </v-alert>
                 </v-col>
-                <v-col v-else
-                        v-for="(location, i) in shipLocations" :key="'location-' + i"
-                        cols="12" md="6">
-                    <v-card>
-                        <v-list-item>
-                            <v-list-item-avatar rounded="0">
-                                <location-image v-if="locations.data"
-                                    :location="locations.data.locations.find(loc => loc.symbol == location.symbol)" />
-                            </v-list-item-avatar>
-                            <v-list-item-content>
-                                <v-list-item-title class="headline">{{ location.symbol }}</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
+                <template v-else>
+                    <v-col v-if="shipLocations.inTransit.length > 0">
+                        <v-card>
+                            <v-list-item>
+                                <v-list-item-content>
+                                    <v-list-item-title class="headline">In Transit</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
 
-                        <v-divider />
+                            <v-divider />
 
-                        <ship-list-item v-for="(ship, j) in location.ships" :key="'location-' + i + '-' + j"
-                            :ship="ship" />
-                    </v-card>
-                </v-col>
+                            <ship-list-item v-for="(ship, j) in shipLocations.inTransit" :key="'intransit-' + j"
+                                :ship="ship"
+                                @refresh="ships.reload(true)" />
+                        </v-card>
+                    </v-col>
+        
+                    <v-col
+                            v-for="(location, i) in shipLocations.locations" :key="'location-' + i"
+                            cols="12" md="6">
+                        <v-card>
+                            <v-list-item two-line v-if="locations.data">
+                                <v-list-item-avatar rounded="0">
+                                    <location-image v-if="locations.data"
+                                        :location="locations.data.locations.find(loc => loc.symbol == location.symbol)" />
+                                </v-list-item-avatar>
+                                <v-list-item-content>
+                                    <v-list-item-title class="headline">{{ locations.data.locations.find(loc => loc.symbol == location.symbol).name }}</v-list-item-title>
+                                    <v-list-item-subtitle>{{ location.symbol }}</v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
+
+                            <v-divider />
+
+                            <ship-list-item v-for="(ship, j) in location.ships" :key="'location-' + i + '-' + j"
+                                :ship="ship"
+                                @refresh="ships.reload(true)" />
+                        </v-card>
+                    </v-col>
+                </template>
             </v-row>
         </v-container>
     </div>
@@ -119,8 +139,15 @@
             shipLocations() {
                 const locations = [];
 
+                const inTransit = [];
+
                 let location = null;
                 for(let ship of [ ...this.ships.data.ships ].sort((a, b) => a.type.localeCompare(b.type))) {
+                    if(!ship.location) {
+                        inTransit.push(ship);
+                        continue;
+                    }
+
                     if(location && ship.location != location.symbol) {
                         locations.push(location);
                         location = null;
@@ -140,7 +167,10 @@
                     locations.push(location);
                 }
 
-                return locations;
+                return {
+                    inTransit,
+                    locations
+                };
             }
         }
     }

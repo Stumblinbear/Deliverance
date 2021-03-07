@@ -61,11 +61,9 @@
 
         <v-expand-transition>
             <v-card
-                v-if="reveal"
-                class="transition-fast-in-fast-out v-card--reveal"
-                style="height: calc(100% - 56px);"
-            >
-                
+                    v-if="reveal"
+                    class="transition-fast-in-fast-out v-card--reveal"
+                    style="height: calc(100% - 56px);">
                 <v-card-actions class="pt-3">
                     <v-btn text v-if="ship.purchaseLocations.length > 3">
                         View All
