@@ -43,7 +43,7 @@
 
         <img
           src="/assets/logo.png"
-          class="bar-logo ml-3 mr-6 d-none d-sm-flex" />
+          class="bar-logo mr-5 d-none d-sm-flex" />
 
         <div class="d-none d-md-flex">
           <v-btn
