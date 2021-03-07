@@ -286,7 +286,7 @@
                     
                     this.buy.reveal = false;
                 } catch(e) {
-                    this.move.error = e.response.data.error.message;
+                    this.buy.error = e.response.data.error.message;
                 }
                 
                 this.buy.loading = false;
@@ -305,7 +305,7 @@
                     
                     this.sell.reveal = false;
                 } catch(e) {
-                    this.move.error = e.response.data.error.message;
+                    this.sell.error = e.response.data.error.message;
                 }
                 
                 this.sell.loading = false;
