@@ -1,5 +1,8 @@
 <template>
-    <v-list-item three-line>
+    <v-skeleton-loader v-if="!ship"
+            class="mb-2" type="list-item-avatar-two-line" />
+    <v-list-item v-else
+            three-line>
         <ship-image :type="ship.type"
             class="mr-3" />
 
@@ -34,8 +37,7 @@
         components: { ShipImage },
         props: {
             ship: {
-                type: Object,
-                required: true
+                type: Object
             }
         }
     }

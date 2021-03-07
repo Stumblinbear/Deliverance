@@ -2,77 +2,70 @@
     <v-container>
         <v-alert v-if="loans.error"
                 prominent type="error">
-        {{ loans }}
+            {{ loans }}
         </v-alert>
         <v-row v-else>
             <v-col cols="12" md="6">
-                <div class="headline">
+                <div class="headline mb-4">
                     Current Loans
                 </div>
 
                 <div v-if="!user.data">
-                    <v-skeleton-loader type="card-heading" class="mt-4" />
-                    <v-skeleton-loader type="card-heading" class="mt-4" />
+                    <v-skeleton-loader type="card-heading" class="mb-4" />
+                    <v-skeleton-loader type="card-heading" class="mb-4" />
                 </div>
-                <v-card v-else-if="user.data.user.loans.length == 0"
-                        class="mt-4">
-                    <v-card-text>
-                        You have no outstanding loans.
+                <v-alert v-else-if="user.data.user.loans.length == 0">
+                    You have no outstanding loans.
+                </v-alert>
+                <v-card v-else
+                        v-for="(loan, i) in user.data.user.loans" :key="i"
+                        class="mb-4">
+                    <v-card-text class="pb-0">
+                        <v-row>
+                            <v-col>
+                                {{ loan.type[0] + loan.type.substring(1).toLowerCase() }}
+                            </v-col>
+                            <v-col class="text-right">
+                                <v-chip small label>
+                                    {{ loan.status[0] + loan.status.substring(1).toLowerCase() }}
+                                </v-chip>
+                            </v-col>
+                        </v-row>
+                        
+                        <div class="text-h5 text--primary">
+                            {{ loan.repaymentAmount }} <small>Credits due</small> <timeago :datetime="loan.due" :auto-update="10" />
+                        </div>
                     </v-card-text>
-                </v-card>
-                <div v-else>
-                    <v-card v-for="(loan, i) in user.data.user.loans" :key="i"
-                            class="mt-4">
-                        <v-card-text class="pb-0">
-                            <v-row>
-                                <v-col>
-                                    {{ loan.type[0] + loan.type.substring(1).toLowerCase() }}
-                                </v-col>
-                                <v-col class="text-right">
-                                    <v-chip small label>
-                                        {{ loan.status[0] + loan.status.substring(1).toLowerCase() }}
-                                    </v-chip>
-                                </v-col>
-                            </v-row>
-                            
-                            <div class="text-h5 text--primary">
-                                {{ loan.repaymentAmount }} <small>Credits due</small> <timeago :datetime="loan.due" :auto-update="10" />
-                            </div>
-                        </v-card-text>
 
-                        <v-card-actions>
-                            <v-divider class="ml-2 mr-5" />
-                            
-                            <v-btn
-                                    depressed color="primary"
-                                    :disabled="loan.repaymentAmount > user.data.user.credits"
-                                    :loading="loading"
-                                    @click="repayLoan(loan.id)">
-                                Repay Loan
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </div>
+                    <v-card-actions>
+                        <v-divider class="ml-2 mr-5" />
+                        
+                        <v-btn
+                                depressed color="primary"
+                                :disabled="loan.repaymentAmount > user.data.user.credits"
+                                :loading="loading"
+                                @click="repayLoan(loan.id)">
+                            Repay Loan
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
             </v-col>
             <v-col cols="12" md="6">
-                <div class="headline">
+                <div class="headline mb-4">
                     Available Loans
                 </div>
 
                 <div v-if="!loans.data">
-                    <v-skeleton-loader type="card-heading" class="mt-4" />
-                    <v-skeleton-loader type="card-heading" class="mt-4" />
-                    <v-skeleton-loader type="card-heading" class="mt-4" />
+                    <v-skeleton-loader type="card-heading" class="mb-4" />
+                    <v-skeleton-loader type="card-heading" class="mb-4" />
+                    <v-skeleton-loader type="card-heading" class="mb-4" />
                 </div>
-                <v-card v-else-if="loans.data.loans.length == 0"
-                        class="mt-3">
-                    <v-card-text>
-                        You have no loan offers.
-                    </v-card-text>
-                </v-card>
+                <v-alert v-else-if="loans.data.loans.length == 0">
+                    You have no loan offers.
+                </v-alert>
                 <div v-else>
                     <v-card v-for="(loan, i) in loans.data.loans" :key="i"
-                            class="mt-3">
+                            class="mb-3">
                         <v-card-text class="pb-0">
                             <v-row>
                                 <v-col>

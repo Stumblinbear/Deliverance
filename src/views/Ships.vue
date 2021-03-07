@@ -2,34 +2,35 @@
     <v-container>
         <v-alert v-if="user.error"
                 prominent type="error">
-            {{ ships }}
+            {{ user }}
         </v-alert>
         <v-row v-else>
             <v-col v-if="!user.data">
                 <v-row>
-                    <v-col cols="12">
-                        <v-list-item>
-                            <v-list-item-avatar>
-                                <v-skeleton-loader type="avatar" />
-                            </v-list-item-avatar>
-                            <v-list-item-content>
+                    <v-col cols="12" md="6">
+                        <v-card>
+                            <v-card-text>
                                 <v-skeleton-loader type="heading" />
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-col>
+                            </v-card-text>
 
-                    <v-col v-for="i in 4" :key="i"
-                            cols="12" sm="6" md="4">
-                        <ship-info />
+                            <ship-list-item />
+                        </v-card>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-card>
+                            <v-card-text>
+                                <v-skeleton-loader type="heading" />
+                            </v-card-text>
+
+                            <ship-list-item />
+                        </v-card>
                     </v-col>
                 </v-row>
             </v-col>
             <v-col v-else-if="user.data.user.ships.length == 0">
-                <v-card>
-                    <v-card-text>
-                        You have no ships in your fleet.
-                    </v-card-text>
-                </v-card>
+                <v-alert>
+                    You have no ships in your fleet.
+                </v-alert>
             </v-col>
             <v-col v-else
                     v-for="(location, i) in locations" :key="'location-' + i"

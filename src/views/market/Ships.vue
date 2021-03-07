@@ -20,16 +20,14 @@
 
                     <v-col v-for="i in 4" :key="i"
                             cols="12" sm="6" md="4">
-                        <ship-info />
+                        <ship-purchase />
                     </v-col>
                 </v-row>
             </v-col>
             <v-col v-else-if="ships.data.ships.length == 0">
-                <v-card>
-                    <v-card-text>
-                        There are no ships available.
-                    </v-card-text>
-                </v-card>
+                <v-alert type="warning">
+                    There are no ships available for purchase.
+                </v-alert>
             </v-col>
             <v-col v-else>
                 <v-row v-for="(manufacturer, i) in manufacturers"
