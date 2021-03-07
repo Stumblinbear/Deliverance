@@ -7,7 +7,7 @@
         <v-row v-else>
             <v-col cols="12" md="6">
                 <div class="headline mb-4">
-                    Current Loans
+                    Your Loans
                 </div>
 
                 <div v-if="!user.data">
@@ -15,7 +15,7 @@
                     <v-skeleton-loader type="card-heading" class="mb-4" />
                 </div>
                 <v-alert v-else-if="user.data.user.loans.length == 0">
-                    You have no outstanding loans.
+                    You have no loan history.
                 </v-alert>
                 <v-card v-else
                         v-for="(loan, i) in user.data.user.loans" :key="i"
