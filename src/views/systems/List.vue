@@ -34,7 +34,7 @@
             <v-row
                     align="center" justify="space-around"
                     no-gutters class="pa-5">
-                <v-col v-for="(location, j) in system.locations" :key="'location-' + i + '-' + j"
+                <v-col v-for="(location, j) in sortOrbits(system.locations)" :key="'location-' + i + '-' + j"
                         class="text-center">
                     <location-image :location="location" class="mx-auto" />
                     <div class="overline mt-2">{{ location.symbol }}</div>
@@ -45,6 +45,8 @@
 </template>
 
 <script>
+    import { sortOrbits } from '@/utils/orbital';
+
     import Sun from '@/components/Sun.vue';
     import LocationImage from '@/components/LocationImage.vue';
 
@@ -57,6 +59,7 @@
                 // Highly doubtful that this will change minute-to-minute, but update it just in case
                 interval: 1000 * 60 * 5
             }
-        }
+        },
+        methods: { sortOrbits }
     }
 </script>

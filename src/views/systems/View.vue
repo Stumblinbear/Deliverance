@@ -14,7 +14,7 @@
                     no-gutters>
                 <sun />
                 
-                <v-col v-for="(location, j) in locations.data.locations" :key="'location-' + j"
+                <v-col v-for="(location, j) in sortOrbits(locations.data.locations)" :key="'location-' + j"
                         class="text-center">
                     <location-image :location="location" class="mx-auto" />
                     <div class="overline mt-2">{{ location.symbol }}</div>
@@ -156,6 +156,8 @@
 </style>
 
 <script>
+    import { sortOrbits } from '@/utils/orbital';
+
     import Sun from '@/components/Sun.vue';
     import LocationImage from '@/components/LocationImage.vue';
     import Shipyard from '@/components/Shipyard.vue';
@@ -222,6 +224,7 @@
                     locations
                 };
             }
-        }
+        },
+        methods: { sortOrbits }
     }
 </script>
