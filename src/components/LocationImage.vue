@@ -6,6 +6,7 @@
 <script>
     import Sun from './Sun.vue';
     import Planet from './Planet.vue';
+    import Asteroid from './Asteroid.vue';
 
     import seedRandom from 'seedrandom';
 
@@ -42,6 +43,14 @@
                     return {
                         is: Planet,
                         type: 'gas-giant-1',
+                        scale: .3 + (random() / 3)
+                    };
+                }
+                
+                if(type == 'ASTEROID') {
+                    return {
+                        is: Asteroid,
+                        type: 'asteroid-' + Math.floor(random() * 6),
                         scale: .3 + (random() / 3)
                     };
                 }
