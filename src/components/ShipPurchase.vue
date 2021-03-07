@@ -2,6 +2,7 @@
     <v-skeleton-loader v-if="!ship"
         type="card-heading, list-item, list-item" />
     <v-card v-else
+            outlined
             class="fill-height">
         <v-card-text class="pb-0">
             <v-row align="center">
@@ -100,7 +101,7 @@
                 </v-list>
 
                 <v-card-actions class="pt-3">
-                    <v-btn text v-if="ship.purchaseLocations.length > 3">
+                    <v-btn text v-if="purchaseLocations.length > 3">
                         View All
                     </v-btn>
 
@@ -176,6 +177,10 @@
         props: {
             ship: {
                 type: Object
+            }, system: {
+                type: String
+            }, location: {
+                type: String
             }
         },
         chimera: {
@@ -194,12 +199,30 @@
             loading: false
         }),
         computed: {
+            purchaseLocations() {
+                return this.ship.purchaseLocations.filter(entry => {
+                    if(this.system) {
+                        if(!entry.location.startsWith(this.system + '-')) {
+                            return false;
+                        }
+                    }
+                    
+                    if(this.location) {
+                        if(entry.location != this.location && !entry.location.endsWith('-' + this.location)) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                })
+            },
+
             minimumPrice() {
-                return this.ship.purchaseLocations.reduce((acc, loc) => (!acc || loc.price < acc ? loc.price : acc), null);
+                return this.purchaseLocations.reduce((acc, loc) => (!acc || loc.price < acc ? loc.price : acc), null);
             },
             purchaseList() {
                 return [ null, null, null ].map((v, i) => {
-                    return this.ship.purchaseLocations[i] ?? null;
+                    return this.purchaseLocations[i] ?? null;
                 })
             }
         },

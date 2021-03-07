@@ -25,6 +25,13 @@
         <v-container>
             <div class="text-h3 mb-8">
                 Omicron Eridani
+
+                <v-btn
+                        depressed color="primary"
+                        class="float-right"
+                        @click="shipyard.reveal = true">
+                    Shipyard
+                </v-btn>
             </div>
 
             <v-row>
@@ -97,6 +104,42 @@
                 </template>
             </v-row>
         </v-container>
+
+        <v-dialog
+                v-model="shipyard.reveal"
+                width="800"
+                scrollable>
+            <v-card>
+                <v-card-title class="headline">
+                    Shipyard
+                </v-card-title>
+
+                <v-divider />
+
+                <v-card-text v-if="shipyard.loading"
+                        class="text-center pt-6">
+                    <v-progress-circular
+                        color="primary"
+                        indeterminate
+                        size="24"
+                        width="2" />
+                </v-card-text>
+                <template v-else>
+                    <v-alert v-if="shipyard.error"
+                            type="error"
+                            tile
+                            class="mb-0">
+                        {{ shipyard.error }}
+                    </v-alert>
+                    
+                    <v-card-text>
+                        <shipyard
+                            :system="$route.params.id"
+                            @refresh="ships.reload(true)" />
+                    </v-card-text>
+                </template>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -116,10 +159,11 @@
 <script>
     import Sun from '@/components/Sun.vue';
     import LocationImage from '@/components/LocationImage.vue';
+    import Shipyard from '@/components/Shipyard.vue';
     import ShipListItem from '@/components/ShipListItem.vue';
 
     export default {
-        components: { Sun, LocationImage, ShipListItem },
+        components: { Sun, LocationImage, Shipyard, ShipListItem },
         chimera: {
             ships() {
                 return {
@@ -135,6 +179,13 @@
                 }
             }
         },
+        data: () => ({
+            shipyard: {
+                reveal: false,
+                error: null,
+                loading: false
+            }
+        }),
         computed: {
             shipLocations() {
                 const locations = [];
