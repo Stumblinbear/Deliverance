@@ -23,16 +23,22 @@
         </v-sheet>
 
         <v-container>
-            <div class="text-h3 mb-8">
-                Omicron Eridani
+            <v-row
+                    align="center">
+                <v-col
+                        cols="12" sm="9"
+                        class="text-h3 text-center text-sm-left">
+                    Omicron Eridani
+                </v-col>
 
-                <v-btn
-                        depressed color="primary"
-                        class="float-right"
-                        @click="shipyard.reveal = true">
-                    Shipyard
-                </v-btn>
-            </div>
+                <v-col cols="12" sm="3">
+                    <v-btn
+                            depressed block color="primary"
+                            @click="shipyard.reveal = true">
+                        View Shipyard
+                    </v-btn>
+                </v-col>
+            </v-row>
 
             <v-row>
                 <v-col v-if="!ships.data">
