@@ -2,7 +2,8 @@
     <v-skeleton-loader v-if="!ship"
             class="mb-2" type="list-item-avatar-two-line" />
     <v-list-item v-else
-            three-line>
+            :three-line="!dense"
+            :dense="dense">
         <ship-image :type="ship.type"
             class="mr-3" />
 
@@ -12,12 +13,14 @@
             </v-list-item-title>
             <v-list-item-subtitle>
                 <v-chip v-if="ship.cargo.length == 0"
-                        small label>
+                        :small="!dense" :x-small="dense"
+                        label>
                     No Cargo
                 </v-chip>
                 <v-chip v-else
                         v-for="(cargo, i) in ship.cargo" :key="i"
-                        small label
+                        :small="!dense" :x-small="dense"
+                        label
                         class="mr-2">
                     {{ cargo.good }} x{{ cargo.quantity }}
                 </v-chip>
@@ -220,6 +223,10 @@
         props: {
             ship: {
                 type: Object
+            },
+            dense: {
+                type: Boolean,
+                default: false
             }
         },
         chimera: {

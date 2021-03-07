@@ -36,17 +36,21 @@
             <template v-else>
                 <v-col v-if="shipSystems.inTransit.length > 0">
                     <v-card>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title class="headline">In Transit</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
+                        <v-list>
+                            <v-list-item>
+                                <v-list-item-content>
+                                    <v-list-item-title class="headline">In Transit</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
 
-                        <v-divider />
+                            <v-divider />
 
-                        <ship-list-item v-for="(ship, j) in shipSystems.inTransit" :key="'intransit-' + j"
-                            :ship="ship"
-                            @refresh="ships.reload(true)" />
+                            <ship-list-item
+                                v-for="(ship, j) in shipSystems.inTransit" :key="'intransit-' + j"
+                                :ship="ship"
+                                dense
+                                @refresh="ships.reload(true)" />
+                        </v-list>
                     </v-card>
                 </v-col>
 
@@ -54,25 +58,29 @@
                         v-for="(system, i) in shipSystems.systems" :key="'system-' + i"
                         cols="12" md="6">
                     <v-card>
-                        <v-list-item>
-                            <v-list-item-avatar rounded="0">
-                                <sun :scale=".3" />
-                            </v-list-item-avatar>
-                            <v-list-item-content>
-                                <v-list-item-title class="headline">{{ system.symbol }}</v-list-item-title>
-                            </v-list-item-content>
-                            <v-list-item-action>
-                                <v-btn small depressed color="primary" :to="'/systems/' + system.symbol">
-                                    View
-                                </v-btn>
-                            </v-list-item-action>
-                        </v-list-item>
+                        <v-list>
+                            <v-list-item>
+                                <v-list-item-avatar rounded="0">
+                                    <sun :scale=".3" />
+                                </v-list-item-avatar>
+                                <v-list-item-content>
+                                    <v-list-item-title class="headline">{{ system.symbol }}</v-list-item-title>
+                                </v-list-item-content>
+                                <v-list-item-action>
+                                    <v-btn small depressed color="primary" :to="'/systems/' + system.symbol">
+                                        View
+                                    </v-btn>
+                                </v-list-item-action>
+                            </v-list-item>
 
-                        <v-divider />
+                            <v-divider />
 
-                        <ship-list-item v-for="(ship, j) in system.ships" :key="'system-' + i + '-' + j"
-                            :ship="ship"
-                            @refresh="ships.reload(true)" />
+                            <ship-list-item
+                                v-for="(ship, j) in system.ships" :key="'system-' + i + '-' + j"
+                                :ship="ship"
+                                dense
+                                @refresh="ships.reload(true)" />
+                        </v-list>
                     </v-card>
                 </v-col>
             </template>
