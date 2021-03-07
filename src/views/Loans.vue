@@ -91,7 +91,7 @@
                             
                             <v-btn
                                     depressed color="primary"
-                                    :disabled="!user.data || user.data.user.loans.length > 0"
+                                    :disabled="!user.data || hasCurrentLoan"
                                     :loading="loading"
                                     @click="acceptLoan(loan.type)">
                                 Accept Loan
@@ -121,6 +121,11 @@
             }
         },
         data: () => ({ loading: false }),
+        computed: {
+            hasCurrentLoan() {
+                return this.user.data.user.loans.some(loan => loan.status == 'CURRENT');
+            }
+        },
         methods: {
             async acceptLoan(type) {
                 this.loading = true;
