@@ -41,11 +41,11 @@
           class="d-flex d-md-none"
           @click="drawer = !drawer" />
 
-        <div class="d-none d-md-flex">
-          <img
-            src="/assets/logo.png"
-            class="bar-logo ml-3 mr-6" />
+        <img
+          src="/assets/logo.png"
+          class="bar-logo ml-3 mr-6 d-none d-sm-flex" />
 
+        <div class="d-none d-md-flex">
           <v-btn
               v-for="([ name, to ], i) in nav" :key="'bar-' + i"
               class="mr-2" text :to="to">
