@@ -1,13 +1,14 @@
 <template>
-    <div v-if="!locations.data">
-        <v-skeleton-loader type="image" />
+    <div>
+        <div v-if="!locations.data">
+            <v-skeleton-loader type="image" />
 
-        <v-container>
-            <v-skeleton-loader type="heading" class="mt-4" />
-        </v-container>
-    </div>
-    <div v-else>
-        <v-sheet rounded color="black" class="mb-5">
+            <v-container>
+                <v-skeleton-loader type="heading" class="mt-4" />
+            </v-container>
+        </div>
+        <v-sheet v-else
+                rounded color="black" class="mb-5">
             <v-row class="system-view"
                     align="center" justify="space-around"
                     no-gutters>
@@ -22,9 +23,59 @@
         </v-sheet>
 
         <v-container>
-            <div class="text-h3">
+            <div class="text-h3 mb-4">
                 Omicron Eridani
             </div>
+
+            <v-row>
+                <v-col v-if="!ships.data">
+                    <v-row>
+                        <v-col cols="12" md="6">
+                            <v-card>
+                                <v-card-text>
+                                    <v-skeleton-loader type="heading" />
+                                </v-card-text>
+
+                                <ship-list-item />
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-card>
+                                <v-card-text>
+                                    <v-skeleton-loader type="heading" />
+                                </v-card-text>
+
+                                <ship-list-item />
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                </v-col>
+                <v-col v-else-if="ships.data.ships.length == 0">
+                    <v-alert>
+                        You have no ships in your fleet.
+                    </v-alert>
+                </v-col>
+                <v-col v-else
+                        v-for="(location, i) in shipLocations" :key="'location-' + i"
+                        cols="12" md="6">
+                    <v-card>
+                        <v-list-item>
+                            <v-list-item-avatar rounded="0">
+                                <location-image v-if="locations.data"
+                                    :location="locations.data.locations.find(loc => loc.symbol == location.symbol)" />
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-title class="headline">{{ location.symbol }}</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+
+                        <v-divider />
+
+                        <ship-list-item v-for="(ship, j) in location.ships" :key="'location-' + i + '-' + j"
+                            :ship="ship" />
+                    </v-card>
+                </v-col>
+            </v-row>
         </v-container>
     </div>
 </template>
@@ -45,15 +96,51 @@
 <script>
     import Sun from '@/components/Sun.vue';
     import LocationImage from '@/components/LocationImage.vue';
+    import ShipListItem from '@/components/ShipListItem.vue';
 
     export default {
-        components: { Sun, LocationImage },
+        components: { Sun, LocationImage, ShipListItem },
         chimera: {
+            ships() {
+                return {
+                    key: 'user-ships',
+                    url: '/users/' + this.$store.state.username + '/ships',
+                    interval: 1000 * 30
+                }
+            },
             locations() {
                 return {
                     key: 'system-' + this.$route.params.id,
                     url: '/game/systems/' + this.$route.params.id + '/locations'
                 }
+            }
+        },
+        computed: {
+            shipLocations() {
+                const locations = [];
+
+                let location = null;
+                for(let ship of [ ...this.ships.data.ships ].sort((a, b) => a.type.localeCompare(b.type))) {
+                    if(location && ship.location != location.symbol) {
+                        locations.push(location);
+                        location = null;
+                    }
+
+                    if(location == null) {
+                        location = {
+                            symbol: ship.location,
+                            ships: [ ]
+                        };
+                    }
+
+                    location.ships.push(ship);
+                }
+
+                if(location != null) {
+                    locations.push(location);
+                }
+
+                return locations;
             }
         }
     }
