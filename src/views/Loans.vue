@@ -20,34 +20,52 @@
                 <v-card v-else
                         v-for="(loan, i) in user.data.user.loans" :key="i"
                         class="mb-4">
-                    <v-card-text class="pb-0">
-                        <v-row>
+                    
+                    <template v-if="loan.status == 'CURRENT'">
+                        <v-card-text class="pb-0">
+                            <v-row>
+                                <v-col>
+                                    {{ prettifyEnum(loan.type) }}
+                                </v-col>
+                                <v-col class="text-right">
+                                    <v-chip small label>
+                                        {{ prettifyEnum(loan.status) }}
+                                    </v-chip>
+                                </v-col>
+                            </v-row>
+                            
+                            <div class="text-h5 text--primary">
+                                {{ loan.repaymentAmount }} <small>Credits due</small> <timeago :datetime="loan.due" :auto-update="10" />
+                            </div>
+                        </v-card-text>
+
+                        <v-card-actions>
+                            <v-divider class="ml-2 mr-5" />
+                            
+                            <v-btn
+                                    depressed color="primary"
+                                    :disabled="loan.repaymentAmount > user.data.user.credits"
+                                    :loading="loading"
+                                    @click="repayLoan(loan.id)">
+                                Repay Loan
+                            </v-btn>
+                        </v-card-actions>
+                    </template>
+                    <v-card-text>
+                        <v-row align="center">
+                            <v-col class="shrink">
+                                {{ prettifyEnum(loan.type) }}
+                            </v-col>
                             <v-col>
-                                {{ loan.type[0] + loan.type.substring(1).toLowerCase() }}
+                                {{ loan.repaymentAmount }} <small>Credits</small>
                             </v-col>
                             <v-col class="text-right">
                                 <v-chip small label>
-                                    {{ loan.status[0] + loan.status.substring(1).toLowerCase() }}
+                                    {{ prettifyEnum(loan.status) }}
                                 </v-chip>
                             </v-col>
                         </v-row>
-                        
-                        <div class="text-h5 text--primary">
-                            {{ loan.repaymentAmount }} <small>Credits due</small> <timeago :datetime="loan.due" :auto-update="10" />
-                        </div>
                     </v-card-text>
-
-                    <v-card-actions>
-                        <v-divider class="ml-2 mr-5" />
-                        
-                        <v-btn
-                                depressed color="primary"
-                                :disabled="loan.repaymentAmount > user.data.user.credits"
-                                :loading="loading"
-                                @click="repayLoan(loan.id)">
-                            Repay Loan
-                        </v-btn>
-                    </v-card-actions>
                 </v-card>
             </v-col>
             <v-col cols="12" md="6">
@@ -69,7 +87,7 @@
                         <v-card-text class="pb-0">
                             <v-row>
                                 <v-col>
-                                    {{ loan.type[0] + loan.type.substring(1).toLowerCase() }}
+                                    {{ prettifyEnum(loan.type) }}
                                 </v-col>
                                 <v-col class="text-right">
                                     {{ loan.termInDays }} days
@@ -105,6 +123,8 @@
 </template>
 
 <script>
+    import { prettifyEnum } from '@/utils/text';
+
     export default {
         chimera: {
             user() {
@@ -127,6 +147,8 @@
             }
         },
         methods: {
+            prettifyEnum,
+
             async acceptLoan(type) {
                 this.loading = true;
 
