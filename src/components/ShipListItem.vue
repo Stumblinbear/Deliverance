@@ -66,6 +66,7 @@
                             elevation="0"
                             color="accent"
                             class="grow"
+                            :disabled="ship.cargo.length == 0"
                             @click="sell.reveal = true; reveal = false">
                         Sell
                     </v-btn>
@@ -176,9 +177,10 @@
                             {{ sell.error }}
                         </v-alert>
                         
-                        <sell-cargo
+                        <market-sell
                             :origin="ship.location"
-                            @select="offloadCargo" />
+                            :cargo="ship.cargo"
+                            @sell="sellCargo" />
                     </template>
                 </v-card>
             </v-dialog>
@@ -211,9 +213,10 @@
     import ShipImage from '@/components/ShipImage.vue';
     import SelectLocation from '@/components/SelectLocation.vue';
     import MarketBuy from '@/components/MarketBuy.vue';
+    import MarketSell from '@/components/MarketSell.vue';
 
     export default {
-        components: { ShipImage, SelectLocation, MarketBuy, SellCargo: MarketBuy },
+        components: { ShipImage, SelectLocation, MarketBuy, MarketSell },
         props: {
             ship: {
                 type: Object
@@ -264,7 +267,7 @@
                     
                     this.move.reveal = false;
                 } catch(e) {
-                    this.move.error = 'Ship has insufficient fuel for flight plan.';
+                    this.move.error = e.response.data.error.message;
                 }
                 
                 this.move.loading = false;
@@ -283,12 +286,29 @@
                     
                     this.buy.reveal = false;
                 } catch(e) {
-                    this.buy.error = 'Ship has insufficient fuel for flight plan.';
+                    this.move.error = e.response.data.error.message;
                 }
                 
                 this.buy.loading = false;
-            }, async offloadCargo(type, count) {
-                console.log(type, count);
+            }, async sellCargo(symbol, quantity) {
+                this.sell.loading = true;
+                this.sell.error = null;
+
+                try {
+                    await this.axios.post('/users/' + this.$store.state.username + '/sell-orders', {
+                        shipId: this.ship.id,
+                        good: symbol,
+                        quantity
+                    });
+
+                    this.$emit('refresh');
+                    
+                    this.sell.reveal = false;
+                } catch(e) {
+                    this.move.error = e.response.data.error.message;
+                }
+                
+                this.sell.loading = false;
             }
         }
     }

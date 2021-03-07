@@ -6,8 +6,12 @@
             class="mb-2" type="list-item-avatar-two-line" />
     </div>
     <v-alert v-else-if="market.data.planet.marketplace.length == 0"
-            type="error">
+            type="error" tile>
         No market data could be found.
+    </v-alert>
+    <v-alert v-else-if="marketEntries.length == 0"
+            type="error" tile>
+        You have no cargo to sell.
     </v-alert>
     <v-window v-else
             v-model="step">
@@ -21,7 +25,7 @@
                             {{ entry.symbol }}
                         </v-list-item-title>
                         <v-list-item-subtitle>
-                            {{ entry.available }} Available at {{ entry.pricePerUnit }} Credits each
+                            Buying at {{ entry.pricePerUnit }} Credits
                         </v-list-item-subtitle>
                     </v-list-item-content>
 
@@ -43,7 +47,7 @@
                         {{ selected.symbol }}
                     </v-list-item-title>
                     <v-list-item-subtitle>
-                        {{ selected.available }} Available to Buy
+                        {{ cargo.find(entry => entry.good == selected.symbol).quantity }} Available to Sell
                     </v-list-item-subtitle>
                 </v-list-item-content>
 
@@ -58,6 +62,7 @@
                 v-model="quantity"
                 type="number"
                 :min="0"
+                :max="cargo.find(entry => entry.good == selected.symbol).quantity"
                 label="Quantity"
                 outlined
                 hide-details />
@@ -75,8 +80,8 @@
             <v-btn
                     depressed color="primary"
                     :disabled="quantity <= 0"
-                    @click="$emit('buy', selected.symbol, quantity)">
-                Buy for {{ selected.pricePerUnit * quantity }} Credits
+                    @click="$emit('sell', selected.symbol, quantity)">
+                Sell for {{ selected.pricePerUnit * quantity }} Credits
             </v-btn>
         </v-card-actions>
       </v-window-item>
@@ -88,6 +93,10 @@
         props: {
             origin: {
                 type: String,
+                required: true
+            },
+            cargo: {
+                type: Array,
                 required: true
             }
         },
@@ -107,7 +116,9 @@
         }),
         computed: {
             marketEntries() {
-                const entries = [ ...this.market.data.planet.marketplace ];
+                const entries = [
+                    ...(this.market.data.planet.marketplace.filter(entry => this.cargo.some(cargoEntry => cargoEntry.good == entry.symbol)))
+                ];
 
                 entries.sort((a, b) => a.symbol.localeCompare(b.symbol))
 
