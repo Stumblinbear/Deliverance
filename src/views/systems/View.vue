@@ -176,7 +176,7 @@
                 return {
                     key: 'user-ships',
                     url: '/users/' + this.$store.state.username + '/ships',
-                    interval: 1000 * 30
+                    interval: 1000 * 10
                 }
             },
             locations() {

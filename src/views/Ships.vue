@@ -99,7 +99,7 @@
                 return {
                     key: 'user-ships',
                     url: '/users/' + this.$store.state.username + '/ships',
-                    interval: 1000 * 60
+                    interval: 1000 * 30
                 }
             }
         },
