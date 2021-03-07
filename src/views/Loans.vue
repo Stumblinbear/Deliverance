@@ -91,7 +91,7 @@
                             
                             <v-btn
                                     depressed color="primary"
-                                    :disabled="!user.data || user.data.user.loans.some(userLoan => userLoan.type == loan.type)"
+                                    :disabled="!user.data || user.data.user.loans.length > 0"
                                     :loading="loading"
                                     @click="acceptLoan(loan.type)">
                                 Accept Loan
