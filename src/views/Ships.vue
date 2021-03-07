@@ -1,11 +1,12 @@
 <template>
     <v-container>
-        <v-alert v-if="user.error"
+        <v-alert v-if="ships.error"
                 prominent type="error">
-            {{ user }}
+            {{ ships }}
         </v-alert>
-        <v-row v-else>
-            <v-col v-if="!user.data">
+        <v-row v-else
+                justify="center">
+            <v-col v-if="!ships.data">
                 <v-row>
                     <v-col cols="12" md="6">
                         <v-card>
@@ -27,24 +28,24 @@
                     </v-col>
                 </v-row>
             </v-col>
-            <v-col v-else-if="user.data.user.ships.length == 0">
+            <v-col v-else-if="ships.data.ships.length == 0">
                 <v-alert>
                     You have no ships in your fleet.
                 </v-alert>
             </v-col>
             <v-col v-else
-                    v-for="(location, i) in locations" :key="'location-' + i"
+                    v-for="(system, i) in shipSystems" :key="'system-' + i"
                     cols="12" md="6">
-                <v-card class="mb-3">
+                <v-card>
                     <v-list-item>
                         <v-list-item-avatar rounded="0">
                             <sun :scale=".3" />
                         </v-list-item-avatar>
                         <v-list-item-content>
-                            <v-list-item-title class="headline">{{ location.id }}</v-list-item-title>
+                            <v-list-item-title class="headline">{{ system.symbol }}</v-list-item-title>
                         </v-list-item-content>
                         <v-list-item-action>
-                            <v-btn small depressed color="primary" :to="'/systems/' + location.id">
+                            <v-btn small depressed color="primary" :to="'/systems/' + system.symbol">
                                 View
                             </v-btn>
                         </v-list-item-action>
@@ -52,7 +53,7 @@
 
                     <v-divider />
 
-                    <ship-list-item v-for="(ship, j) in location.ships" :key="'location-' + i + '-' + j"
+                    <ship-list-item v-for="(ship, j) in system.ships" :key="'system-' + i + '-' + j"
                         :ship="ship" />
                 </v-card>
             </v-col>
@@ -67,40 +68,40 @@
     export default {
         components: { Sun, ShipListItem },
         chimera: {
-            user() {
+            ships() {
                 return {
-                    key: 'user',
-                    url: '/users/' + this.$store.state.username,
+                    key: 'user-ships',
+                    url: '/users/' + this.$store.state.username + '/ships',
                     interval: 1000 * 60
                 }
             }
         },
         computed: {
-            locations() {
-                const locations = [];
+            shipSystems() {
+                const systems = [];
 
-                let location = null;
-                for(let ship of [ ...this.user.data.user.ships ].sort((a, b) => a.type.localeCompare(b.type))) {
-                    if(location && ship.location != location.name) {
-                        locations.push(location);
-                        location = null;
+                let system = null;
+                for(let ship of [ ...this.ships.data.ships ].sort((a, b) => a.type.localeCompare(b.type))) {
+                    if(system && ship.location.split('-')[0] != system.symbol) {
+                        systems.push(system);
+                        system = null;
                     }
 
-                    if(location == null) {
-                        location = {
-                            id: ship.location,
+                    if(system == null) {
+                        system = {
+                            symbol: ship.location.split('-')[0],
                             ships: [ ]
                         };
                     }
 
-                    location.ships.push(ship);
+                    system.ships.push(ship);
                 }
 
-                if(location != null) {
-                    locations.push(location);
+                if(system != null) {
+                    systems.push(system);
                 }
 
-                return locations;
+                return systems;
             }
         }
     }
