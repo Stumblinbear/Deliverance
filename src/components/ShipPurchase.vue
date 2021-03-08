@@ -59,8 +59,8 @@
             
             <v-btn
                     depressed color="primary"
-                    :loading="!user.data"
-                    :disabled="!user.data || minimumPrice > user.data.user.credits"
+                    :loading="loading || maxCredits == null"
+                    :disabled="minimumPrice > maxCredits"
                     @click="reveal = true">
                 Purchase
             </v-btn>
@@ -88,7 +88,8 @@
                             <v-list-item-action>
                                 <v-btn
                                         small depressed color="primary"
-                                        :loading="loading"
+                                        :loading="loading || maxCredits == null"
+                                        :disabled="minimumPrice > maxCredits"
                                         @click="purchaseShip(purchase.location)">
                                     Buy
                                 </v-btn>
@@ -179,20 +180,17 @@
         mixins: [ abbreviate ],
         props: {
             ship: {
-                type: Object
+                type: Object,
+                required: true
             }, system: {
                 type: String
             }, location: {
                 type: String
-            }
-        },
-        chimera: {
-            user() {
-                return {
-                    key: 'user',
-                    url: '/users/' + this.$store.state.username,
-                    interval: 1000 * 60
-                }
+            },
+
+            maxCredits: {
+                type: Number,
+                required: true,
             }
         },
         data: () => ({

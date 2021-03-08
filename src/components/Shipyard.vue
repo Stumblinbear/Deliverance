@@ -47,7 +47,8 @@
                     <ship-purchase
                         :ship="ship"
                         :system="system"
-                        :location="location" />
+                        :location="location"
+                        :max-credits="user.data.user.credits" />
                 </v-col>
             </v-row>
         </v-col>

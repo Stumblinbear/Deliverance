@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <div v-if="loading"
+        <div v-if="!ships.data || loading"
                 class="text-center pt-6">
             <v-progress-circular
                 color="primary"
