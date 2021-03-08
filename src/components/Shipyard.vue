@@ -77,15 +77,17 @@
         chimera: {
             user() {
                 return {
-                    key: 'user',
+                    key: 'user-' + this.$store.state.username,
                     url: '/users/' + this.$store.state.username,
                     interval: 1000 * 60
                 }
             },
-            ships: {
-                key: 'ships',
-                url: '/game/ships',
-                interval: 1000 * 60
+            ships() {
+                return {
+                    key: this.$store.state.username + '-ships',
+                    url: '/game/ships',
+                    interval: 1000 * 60
+                }
             }
         },
         computed: {

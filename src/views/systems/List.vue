@@ -56,11 +56,13 @@
         components: { Sun, LocationImage },
         mixins: [ orbitalMixin ],
         chimera: {
-            systems: {
-                key: 'systems',
-                url: '/game/systems',
-                // Highly doubtful that this will change minute-to-minute, but update it just in case
-                interval: 1000 * 60 * 5
+            systems() {
+                return {
+                    key: this.$store.state.username + '-systems',
+                    url: '/game/systems',
+                    // Highly doubtful that this will change minute-to-minute, but update it just in case
+                    interval: 1000 * 60 * 5
+                }
             }
         }
     }

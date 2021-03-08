@@ -131,15 +131,17 @@
         chimera: {
             user() {
                 return {
-                    key: 'user',
+                    key: 'user-' + this.$store.state.username,
                     url: '/users/' + this.$store.state.username,
                     interval: 1000 * 60
                 }
             },
-            loans: {
-                key: 'loans',
-                url: '/game/loans',
-                interval: 1000 * 60
+            loans() {
+                return {
+                    key:  this.$store.state.username + '-loans',
+                    url: '/game/loans',
+                    interval: 1000 * 60
+                }
             }
         },
         data: () => ({ loading: false }),

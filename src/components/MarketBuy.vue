@@ -123,7 +123,7 @@
         chimera: {
             market() {
                 return {
-                    key: 'market-' + this.origin,
+                    key: this.$store.state.username + '-market-' + this.origin,
                     url: '/game/locations/' + this.origin + '/marketplace',
                     interval: 1000 * 60
                 }

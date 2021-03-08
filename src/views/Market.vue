@@ -124,7 +124,7 @@
         chimera: {
             ships() {
                 return {
-                    key: 'user-ships',
+                    key: 'user-' + this.$store.state.username + '-ships',
                     url: '/users/' + this.$store.state.username + '/ships',
                     interval: 1000 * 60
                 }

@@ -238,13 +238,13 @@
         chimera: {
             user() {
                 return {
-                    key: 'user',
+                    key: 'user-' + this.$store.state.username,
                     url: '/users/' + this.$store.state.username
                 }
             },
             flightPlan() {
                 return {
-                    key: 'flight-plans',
+                    key: this.$store.state.username + '-flight-plans',
                     url: '/users/' + this.$store.state.username + '/flight-plans',
                     auto: false
                 }

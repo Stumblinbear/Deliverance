@@ -6,6 +6,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
+    accounts: [ ],
+
     username: '',
     token: ''
   },
@@ -13,9 +15,21 @@ const store = new Vuex.Store({
 
   },
   actions: {
-    SET_AUTH(store, [ username, token ]) {
-      console.log(username, token);
+    SET_ACCOUNTS(store, accounts) {
+      store.state.accounts = accounts;
+    },
 
+    ADD_ACCOUNT(store, [ username, token ]) {
+      store.state.accounts.push([ username, token ]);
+      
+      localStorage.setItem('accounts', JSON.stringify(store.state.accounts));
+    }, REMOVE_ACCOUNT(store, [ username, token ]) {
+      Vue.delete(store.state.accounts, store.state.accounts.findIndex((auth) => auth[0] == username && auth[1] == token));
+      
+      localStorage.setItem('accounts', JSON.stringify(store.state.accounts));
+    },
+
+    SET_AUTH(store, [ username, token ]) {
       api.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
       store.state.username = username;
@@ -23,16 +37,25 @@ const store = new Vuex.Store({
 
       localStorage.setItem('username', username);
       localStorage.setItem('token', token);
+
+      if(username != '' && token != '' && !store.state.accounts.some((auth) => auth[0] == username && auth[1] == token)) {
+        this.dispatch('ADD_ACCOUNT', [ username, token ]);
+      }
     }
   }
 });
+
+if(localStorage.getItem('accounts')) {
+  store.dispatch('SET_ACCOUNTS', JSON.parse(localStorage.getItem('accounts')));
+}
 
 if(localStorage.getItem('username') && localStorage.getItem('token')) {
   store.dispatch('SET_AUTH', [ localStorage.getItem('username'), localStorage.getItem('token') ]);
 }
 
 api.interceptors.response.use(null,  err => {
-  if(err.response.status == 401) {
+  if(err.response && err.response.status == 401) {
+    store.dispatch('REMOVE_ACCOUNT', [ store.state.username, store.state.token ]);
     store.dispatch('SET_AUTH', [ '', '' ]);
     return;
   }

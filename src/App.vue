@@ -18,22 +18,7 @@
 
     <v-dialog v-if="!$store.state.username || !$store.state.token"
         :value="true" persistent max-width="350">
-      <v-card class="pa-5">
-        <v-text-field
-          v-model="username"
-          label="Username"
-          outlined />
-        <v-text-field
-          v-model="token"
-          label="API Token"
-          outlined />
-
-        <v-btn
-            depressed block color="primary"
-            @click="$store.dispatch('SET_AUTH', [ username, token ])">
-          Set Username / Token
-        </v-btn>
-      </v-card>
+      <login />
     </v-dialog>
     <template v-else>
       <v-app-bar app flat>
@@ -65,6 +50,30 @@
         <v-chip to="/loans">
           {{ user.data ? abbreviate(user.data.user.credits) : 'N/A' }} Credits
         </v-chip>
+
+        <v-menu offset-y rounded="b-md">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+                class="ml-3"
+                tile color="primary"
+                v-bind="attrs"
+                v-on="on">
+              {{ $store.state.username }}
+            </v-btn>
+          </template>
+
+          <v-list dense tile class="py-0">
+            <v-list-item
+                v-for="(account, i) in $store.state.accounts.filter(auth => auth[1] != $store.state.token)" :key="i"
+                @click="$store.dispatch('SET_AUTH', account)">
+              <v-list-item-title>{{ account[0] }}</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item @click="$store.dispatch('SET_AUTH', [ '', '' ])">
+              <v-list-item-title>Log out</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-app-bar>
 
       <v-navigation-drawer
@@ -111,7 +120,10 @@
 <script>
   import { abbreviate } from '@/utils/text';
 
+  import Login from '@/components/Login.vue';
+
   export default {
+    components: { Login },
     mixins: [ abbreviate ],
     chimera: {
       status: {
@@ -122,15 +134,13 @@
 
       user() {
         return {
-          key: 'user',
+          key: 'user-' + this.$store.state.username,
           url: '/users/' + this.$store.state.username,
           interval: 1000 * 30
         }
       }
     },
     data: () => ({
-      username: '', token: '',
-
       drawer: false,
       nav: [
         [ 'Home', '/' ],
