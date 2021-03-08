@@ -54,7 +54,7 @@
             <v-row>
                 <v-col cols="12" md="6">
                     <v-card>
-                        <v-card-title>
+                        <v-card-title class="headline">
                             Best Buy
                         </v-card-title>
 
@@ -83,7 +83,7 @@
 
                 <v-col cols="12" md="6">
                     <v-card>
-                        <v-card-title>
+                        <v-card-title class="headline">
                             Best Sell
                         </v-card-title>
 
