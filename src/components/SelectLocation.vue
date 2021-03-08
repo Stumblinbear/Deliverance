@@ -12,7 +12,7 @@
     <v-list v-else
             dense>
         <v-list-item
-                v-for="(location, i) in locations.data.locations" :key="i"
+                v-for="(location, i) in sortOrbits(locations.data.locations)" :key="i"
                 two-line>
             <v-list-item-content>
                 <v-list-item-title>
@@ -33,7 +33,10 @@
 </template>
 
 <script>
+    import orbitalMixin from '@/utils/orbital';
+
     export default {
+        mixins: [ orbitalMixin ],
         props: {
             origin: {
                 type: String,
