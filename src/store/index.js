@@ -16,13 +16,13 @@ const store = new Vuex.Store({
     SET_AUTH(store, [ username, token ]) {
       console.log(username, token);
 
+      api.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+
       store.state.username = username;
       store.state.token = token;
 
       localStorage.setItem('username', username);
       localStorage.setItem('token', token);
-
-      api.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     }
   }
 });
