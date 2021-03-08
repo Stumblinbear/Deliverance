@@ -17,7 +17,11 @@
                 <v-col v-for="(location, j) in sortOrbits(locations.data.locations)" :key="'location-' + j"
                         class="text-center">
                     <location-image :location="location" class="mx-auto" />
-                    <div class="overline mt-2">{{ location.symbol }}</div>
+                    <div class="pt-4">
+                        <small>{{ location.symbol }}</small>
+                        <br />
+                        <small>{{ getOrbitalDistance(location).toFixed(1) }} DU</small>
+                    </div>
                 </v-col>
             </v-row>
         </v-sheet>
@@ -163,7 +167,7 @@
 </style>
 
 <script>
-    import { sortOrbits } from '@/utils/orbital';
+    import orbitalMixin from '@/utils/orbital';
 
     import Sun from '@/components/Sun.vue';
     import LocationImage from '@/components/LocationImage.vue';
@@ -172,6 +176,7 @@
 
     export default {
         components: { Sun, LocationImage, Shipyard, ShipListItem },
+        mixins: [ orbitalMixin ],
         chimera: {
             ships() {
                 return {
@@ -231,7 +236,6 @@
                     locations
                 };
             }
-        },
-        methods: { sortOrbits }
+        }
     }
 </script>

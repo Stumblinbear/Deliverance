@@ -37,7 +37,9 @@
                 <v-col v-for="(location, j) in sortOrbits(system.locations)" :key="'location-' + i + '-' + j"
                         class="text-center">
                     <location-image :location="location" class="mx-auto" />
-                    <div class="overline mt-2">{{ location.symbol }}</div>
+                    <div class="pt-4">
+                        <small>{{ location.symbol }}</small>
+                    </div>
                 </v-col>
             </v-row>
         </v-card>
@@ -45,13 +47,14 @@
 </template>
 
 <script>
-    import { sortOrbits } from '@/utils/orbital';
+    import orbitalMixin from '@/utils/orbital';
 
     import Sun from '@/components/Sun.vue';
     import LocationImage from '@/components/LocationImage.vue';
 
     export default {
         components: { Sun, LocationImage },
+        mixins: [ orbitalMixin ],
         chimera: {
             systems: {
                 key: 'systems',
@@ -59,7 +62,6 @@
                 // Highly doubtful that this will change minute-to-minute, but update it just in case
                 interval: 1000 * 60 * 5
             }
-        },
-        methods: { sortOrbits }
+        }
     }
 </script>
