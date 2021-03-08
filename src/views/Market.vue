@@ -8,9 +8,9 @@
                 size="24"
                 width="2" />
         </div>
-        <v-alert v-else-if="ships.data.ships.length == 0"
+        <v-alert v-else-if="ships.data.ships.length == 0 || locations.length == 0"
                 type="error">
-            You have no ships collecting market data.
+            You have no ships collecting market data. Do you have any, or are they all in transit?
         </v-alert>
         <template v-else>
             <v-row v-if="bestTransactions.length > 0">
