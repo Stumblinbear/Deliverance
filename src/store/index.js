@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import axios from 'axios';
+import api from '@/plugins/vue-axios';
 
 Vue.use(Vuex);
 
@@ -22,7 +22,7 @@ const store = new Vuex.Store({
       localStorage.setItem('username', username);
       localStorage.setItem('token', token);
 
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+      api.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     }
   }
 });
@@ -30,5 +30,14 @@ const store = new Vuex.Store({
 if(localStorage.getItem('username') && localStorage.getItem('token')) {
   store.dispatch('SET_AUTH', [ localStorage.getItem('username'), localStorage.getItem('token') ]);
 }
+
+api.interceptors.response.use(null,  err => {
+  if(err.response.status == 401) {
+    store.dispatch('SET_AUTH', [ '', '' ]);
+    return;
+  }
+
+  throw err;
+});
 
 export default store;
