@@ -152,7 +152,7 @@
                         <market-buy
                             :origin="ship.location"
                             :credits="user.data ? user.data.user.credits : undefined"
-                            :max-buy="ship.maxCargo - ship.cargo.reduce((acc, entry) => acc + entry.quantity, 0)"
+                            :remaining-cargo="ship.maxCargo - ship.cargo.reduce((acc, entry) => acc + entry.totalVolume, 0)"
                             @buy="purchaseCargo" />
                     </template>
                 </v-card>

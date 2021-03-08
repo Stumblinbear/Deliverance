@@ -25,7 +25,7 @@
                         </v-list-item-subtitle>
                     </v-list-item-content>
 
-                    <v-btn v-if="!maxBuy && !credits"
+                    <v-btn v-if="!remainingCargo && !credits"
                             small depressed color="primary"
                             @click="selected = entry; step = 'quantity'">
                         Buy
@@ -116,7 +116,7 @@
             credits: {
                 type: Number
             },
-            maxBuy: {
+            remainingCargo: {
                 type: Number
             }
         },
@@ -151,9 +151,11 @@
                     maximum = Math.floor(this.credits / entry.pricePerUnit);
                 }
 
-                if(this.maxBuy) {
-                    if(maximum == null || this.maxBuy < maximum) {
-                        maximum = this.maxBuy;
+                if(this.remainingCargo) {
+                    const possiblePurchase = Math.floor(this.remainingCargo / entry.volumePerUnit);
+
+                    if(maximum == null || possiblePurchase < maximum) {
+                        maximum = possiblePurchase;
                     }
                 }
 
