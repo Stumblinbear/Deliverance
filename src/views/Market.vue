@@ -8,7 +8,7 @@
                 size="24"
                 width="2" />
         </div>
-        <v-alert v-if="ships.data.ships.length == 0"
+        <v-alert v-else-if="ships.data.ships.length == 0"
                 type="error">
             You have no ships collecting market data.
         </v-alert>
