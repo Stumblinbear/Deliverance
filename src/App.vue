@@ -63,7 +63,7 @@
           width="2" />
 
         <v-chip to="/loans">
-          {{ user.data ? user.data.user.credits : 'N/A' }} Credits
+          {{ user.data ? abbreviate(user.data.user.credits) : 'N/A' }} Credits
         </v-chip>
       </v-app-bar>
 
@@ -109,7 +109,10 @@
 </style>
 
 <script>
+  import { abbreviate } from '@/utils/text';
+
   export default {
+    mixins: [ abbreviate ],
     chimera: {
       status: {
         key: 'status',

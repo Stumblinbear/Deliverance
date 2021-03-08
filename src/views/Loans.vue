@@ -35,7 +35,7 @@
                             </v-row>
                             
                             <div class="text-h5 text--primary">
-                                {{ loan.repaymentAmount }} <small>Credits due</small> <timeago :datetime="loan.due" :auto-update="10" />
+                                {{ abbreviate(loan.repaymentAmount) }} <small>Credits due</small> <timeago :datetime="loan.due" :auto-update="10" />
                             </div>
                         </v-card-text>
 
@@ -51,13 +51,13 @@
                             </v-btn>
                         </v-card-actions>
                     </template>
-                    <v-card-text>
+                    <v-card-text v-else>
                         <v-row align="center">
                             <v-col class="shrink">
                                 {{ prettifyEnum(loan.type) }}
                             </v-col>
                             <v-col>
-                                {{ loan.repaymentAmount }} <small>Credits</small>
+                                {{ abbreviate(loan.repaymentAmount) }} <small>Credits</small>
                             </v-col>
                             <v-col class="text-right">
                                 <v-chip small label>
@@ -68,6 +68,7 @@
                     </v-card-text>
                 </v-card>
             </v-col>
+
             <v-col cols="12" md="6">
                 <div class="headline mb-4">
                     Available Loans
@@ -95,7 +96,7 @@
                             </v-row>
                             
                             <div class="text-h5 text--primary">
-                                {{ loan.amount }} <small>Credits at</small> {{ loan.rate }}<small><sup>%</sup></small>
+                                {{ abbreviate(loan.amount) }} <small>Credits at</small> {{ loan.rate }}<small><sup>%</sup></small>
                             </div>
                         </v-card-text>
 
@@ -123,9 +124,10 @@
 </template>
 
 <script>
-    import { prettifyEnum } from '@/utils/text';
+    import { prettifyEnum, abbreviate } from '@/utils/text';
 
     export default {
+        mixins: [ prettifyEnum, abbreviate ],
         chimera: {
             user() {
                 return {
@@ -147,8 +149,6 @@
             }
         },
         methods: {
-            prettifyEnum,
-
             async acceptLoan(type) {
                 this.loading = true;
 

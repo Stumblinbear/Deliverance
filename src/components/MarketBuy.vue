@@ -21,7 +21,7 @@
                             {{ entry.symbol }}
                         </v-list-item-title>
                         <v-list-item-subtitle>
-                            {{ entry.available }} Available at {{ entry.pricePerUnit }} Credits each
+                            {{ entry.available }} Available at {{ abbreviate(entry.pricePerUnit) }} Credits each
                         </v-list-item-subtitle>
                     </v-list-item-content>
 
@@ -67,7 +67,7 @@
                 </v-list-item-content>
 
                 <div class="overline">
-                    {{ selected.pricePerUnit }} Credits
+                    {{ abbreviate(selected.pricePerUnit) }} Credits
                 </div>
             </v-list-item>
         </v-card>
@@ -96,7 +96,7 @@
                     depressed color="primary"
                     :disabled="quantity <= 0"
                     @click="$emit('buy', selected.symbol, quantity)">
-                Buy for {{ selected.pricePerUnit * quantity }} Credits
+                Buy for {{ abbreviate(selected.pricePerUnit * quantity) }} Credits
             </v-btn>
         </v-card-actions>
       </v-window-item>
@@ -104,7 +104,10 @@
 </template>
 
 <script>
+    import { abbreviate } from '@/utils/text';
+
     export default {
+        mixins: [ abbreviate ],
         props: {
             origin: {
                 type: String,

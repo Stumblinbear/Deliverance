@@ -52,7 +52,7 @@
 
         <v-card-actions>
             <v-chip>
-                {{ minimumPrice }} Credits
+                {{ abbreviate(minimumPrice) }} Credits
             </v-chip>
 
             <v-divider class="ml-2 mr-5" />
@@ -81,7 +81,7 @@
                                     {{ purchase.location }}
                                 </v-list-item-title>
                                 <v-list-item-subtitle>
-                                    {{ purchase.price }} Credits
+                                    {{ abbreviate(purchase.price) }} Credits
                                 </v-list-item-subtitle>
                             </v-list-item-content>
 
@@ -173,7 +173,10 @@
         'ZA-MK-III': [ [ 8, 3, 0, -3 ], [ 2, 5, 0, 1 ], [ 15, 0, 0, 0 ] ],
     };
 
+    import { abbreviate } from '@/utils/text';
+
     export default {
+        mixins: [ abbreviate ],
         props: {
             ship: {
                 type: Object

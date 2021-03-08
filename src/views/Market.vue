@@ -8,6 +8,10 @@
                 size="24"
                 width="2" />
         </div>
+        <v-alert v-if="ships.data.ships.length == 0"
+                type="error">
+            You have no ships collecting market data.
+        </v-alert>
         <template v-else>
             <v-row v-if="bestTransactions.length > 0">
                 <v-col v-for="(transaction, i) in bestTransactions" :key="i"
@@ -21,7 +25,7 @@
 
                                 <v-col class="text-center">
                                     <div class="overline">{{ transaction.buy.location.symbol }}</div>
-                                    <div class="overline">{{ transaction.buy.pricePerUnit }} Credits</div>
+                                    <div class="overline">{{ abbreviate(transaction.buy.pricePerUnit) }} Credits</div>
                                 </v-col>
                                 
                                 <v-col class="text-center">
@@ -30,7 +34,7 @@
                                 
                                 <v-col class="text-center">
                                     <div class="overline">{{ transaction.sell.location.symbol }}</div>
-                                    <div class="overline">{{ transaction.sell.pricePerUnit }} Credits</div>
+                                    <div class="overline">{{ abbreviate(transaction.sell.pricePerUnit) }} Credits</div>
                                 </v-col>
                                 
                                 <v-col class="text-center">
@@ -38,7 +42,7 @@
                                 </v-col>
                                 
                                 <v-col class="text-center">
-                                    +{{ transaction.sell.pricePerUnit - transaction.buy.pricePerUnit }} Credits
+                                    +{{ abbreviate(transaction.sell.pricePerUnit - transaction.buy.pricePerUnit) }} Credits
                                     <br />
                                     (+{{ ((transaction.sell.pricePerUnit - transaction.buy.pricePerUnit) / transaction.buy.pricePerUnit * 100).toFixed(0) }}%)
                                 </v-col>
@@ -69,7 +73,7 @@
                                         {{ symbol }}
                                     </v-list-item-title>
                                     <v-list-item-subtitle>
-                                        {{ entry.available }} Available at {{ entry.pricePerUnit }} Credits each on {{ entry.location.symbol }}
+                                        {{ entry.available }} Available at {{ abbreviate(entry.pricePerUnit) }} Credits each on {{ entry.location.symbol }}
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
@@ -98,7 +102,7 @@
                                         {{ symbol }}
                                     </v-list-item-title>
                                     <v-list-item-subtitle>
-                                        {{ entry.pricePerUnit }} Credits each on {{ entry.location.symbol }}
+                                        {{ abbreviate(entry.pricePerUnit) }} Credits each on {{ entry.location.symbol }}
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
@@ -112,9 +116,11 @@
 
 <script>
     import LocationImage from '@/components/LocationImage.vue';
+    import { abbreviate } from '@/utils/text';
 
     export default {
         components: { LocationImage },
+        mixins: [ abbreviate ],
         chimera: {
             ships() {
                 return {
