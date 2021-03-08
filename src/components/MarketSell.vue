@@ -51,7 +51,7 @@
             <v-list-item two-line>
                 <v-list-item-content>
                     <v-list-item-title>
-                        {{ selected.symbol }}
+                        {{ prettifyEnum(entry.symbol) }}
                     </v-list-item-title>
                     <v-list-item-subtitle>
                         {{ selected.quantityInCargo }} Available to Sell
@@ -96,10 +96,10 @@
 </template>
 
 <script>
-    import { abbreviate } from '@/utils/text';
+    import { prettifyEnum, abbreviate } from '@/utils/text';
 
     export default {
-        mixins: [ abbreviate ],
+        mixins: [ prettifyEnum, abbreviate ],
         props: {
             origin: {
                 type: String,

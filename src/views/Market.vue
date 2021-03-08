@@ -20,7 +20,7 @@
                         <v-card-text>
                             <v-row no-gutters align="center" justify="space-around">
                                 <v-col>
-                                    {{ transaction.symbol }}
+                                    {{ prettifyEnum(transaction.symbol) }}
                                 </v-col>
 
                                 <v-col class="text-center">
@@ -70,7 +70,7 @@
 
                                 <v-list-item-content>
                                     <v-list-item-title>
-                                        {{ symbol }}
+                                        {{ prettifyEnum(symbol) }}
                                     </v-list-item-title>
                                     <v-list-item-subtitle>
                                         {{ entry.available }} Available at {{ abbreviate(entry.pricePerUnit) }} Credits each on {{ entry.location.symbol }}
@@ -99,7 +99,7 @@
 
                                 <v-list-item-content>
                                     <v-list-item-title>
-                                        {{ symbol }}
+                                        {{ prettifyEnum(symbol) }}
                                     </v-list-item-title>
                                     <v-list-item-subtitle>
                                         {{ abbreviate(entry.pricePerUnit) }} Credits each on {{ entry.location.symbol }}
@@ -116,11 +116,11 @@
 
 <script>
     import LocationImage from '@/components/LocationImage.vue';
-    import { abbreviate } from '@/utils/text';
+    import { prettifyEnum, abbreviate } from '@/utils/text';
 
     export default {
         components: { LocationImage },
-        mixins: [ abbreviate ],
+        mixins: [ prettifyEnum, abbreviate ],
         chimera: {
             ships() {
                 return {
