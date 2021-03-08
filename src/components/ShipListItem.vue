@@ -116,9 +116,11 @@
                                 {{ move.error }}
                             </v-alert>
                             
-                            <select-location
-                                :origin="ship.location"
-                                @select="moveShip" />
+                            <v-card-text class="pa-0">
+                                <select-location
+                                    :origin="ship.location"
+                                    @select="moveShip" />
+                            </v-card-text>
                         </template>
                     </v-expand-transition>
                 </v-card>
@@ -152,11 +154,13 @@
                                 {{ buy.error }}
                             </v-alert>
                             
-                            <market-buy
-                                :origin="ship.location"
-                                :credits="user.data ? user.data.user.credits : undefined"
-                                :remaining-cargo="ship.maxCargo - ship.cargo.reduce((acc, entry) => acc + entry.totalVolume, 0)"
-                                @buy="purchaseCargo" />
+                            <v-card-text class="pa-0">
+                                <market-buy
+                                    :origin="ship.location"
+                                    :credits="user.data ? user.data.user.credits : undefined"
+                                    :remaining-cargo="ship.maxCargo - ship.cargo.reduce((acc, entry) => acc + entry.totalVolume, 0)"
+                                    @buy="purchaseCargo" />
+                            </v-card-text>
                         </template>
                     </v-expand-transition>
                 </v-card>
@@ -190,10 +194,12 @@
                                 {{ sell.error }}
                             </v-alert>
                             
-                            <market-sell
-                                :origin="ship.location"
-                                :cargo="ship.cargo"
-                                @sell="sellCargo" />
+                            <v-card-text class="pa-0">
+                                <market-sell
+                                    :origin="ship.location"
+                                    :cargo="ship.cargo"
+                                    @sell="sellCargo" />
+                            </v-card-text>
                         </template>
                     </v-expand-transition>
                 </v-card>
