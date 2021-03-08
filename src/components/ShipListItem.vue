@@ -90,7 +90,8 @@
         <template v-if="ship.location">
             <v-dialog
                     v-model="move.reveal"
-                    width="500">
+                    width="500"
+                    scrollable>
                 <v-card>
                     <v-card-title class="headline">
                         Move Ship
@@ -123,7 +124,8 @@
 
             <v-dialog
                     v-model="buy.reveal"
-                    width="500">
+                    width="500"
+                    scrollable>
                 <v-card>
                     <v-card-title class="headline">
                         Market Buy
@@ -149,6 +151,8 @@
                         
                         <market-buy
                             :origin="ship.location"
+                            :credits="user.data ? user.data.user.credits : undefined"
+                            :max-buy="ship.maxCargo - ship.cargo.reduce((acc, entry) => acc + entry.quantity, 0)"
                             @buy="purchaseCargo" />
                     </template>
                 </v-card>
@@ -156,7 +160,8 @@
 
             <v-dialog
                     v-model="sell.reveal"
-                    width="500">
+                    width="500"
+                    scrollable>
                 <v-card>
                     <v-card-title class="headline">
                         Sell Cargo
@@ -190,7 +195,8 @@
         </template>
         <v-dialog v-else
                 v-model="flight.reveal"
-                width="500">
+                width="500"
+                scrollable>
             <v-card>
                 <v-card-title class="headline">
                     Flight Plan
@@ -230,6 +236,12 @@
             }
         },
         chimera: {
+            user() {
+                return {
+                    key: 'user',
+                    url: '/users/' + this.$store.state.username
+                }
+            },
             flightPlan() {
                 return {
                     key: 'flight-plans',

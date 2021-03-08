@@ -25,11 +25,30 @@
                         </v-list-item-subtitle>
                     </v-list-item-content>
 
-                    <v-btn
+                    <v-btn v-if="!maxBuy && !credits"
                             small depressed color="primary"
                             @click="selected = entry; step = 'quantity'">
-                        Select
+                        Buy
                     </v-btn>
+                    <template v-else-if="maximumPurchase(entry) > 0">
+                        <v-btn
+                                small depressed color="primary"
+                                @click="selected = entry; step = 'quantity'">
+                            Buy
+                        </v-btn>
+                        
+                        <v-btn
+                                small depressed color="primary"
+                                class="ml-3"
+                                @click="$emit('buy', entry.symbol, maximumPurchase(entry))">
+                            Buy {{ maximumPurchase(entry) }}
+                        </v-btn>
+                    </template>
+                    <template v-else>
+                        <v-btn small depressed color="primary" disabled>
+                            Unable to Buy
+                        </v-btn>
+                    </template>
                 </v-list-item>
             </v-list>
       </v-window-item>
@@ -58,6 +77,7 @@
                 v-model="quantity"
                 type="number"
                 :min="0"
+                :max="maximumPurchase(selected)"
                 label="Quantity"
                 outlined
                 hide-details />
@@ -89,6 +109,12 @@
             origin: {
                 type: String,
                 required: true
+            },
+            credits: {
+                type: Number
+            },
+            maxBuy: {
+                type: Number
             }
         },
         chimera: {
@@ -112,6 +138,23 @@
                 entries.sort((a, b) => a.symbol.localeCompare(b.symbol))
 
                 return entries;
+            }
+        },
+        methods: {
+            maximumPurchase(entry) {
+                let maximum = null;
+
+                if(this.credits) {
+                    maximum = Math.floor(this.credits / entry.pricePerUnit);
+                }
+
+                if(this.maxBuy) {
+                    if(maximum == null || this.maxBuy < maximum) {
+                        maximum = this.maxBuy;
+                    }
+                }
+
+                return maximum;
             }
         }
     }

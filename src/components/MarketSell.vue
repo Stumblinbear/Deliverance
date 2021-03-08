@@ -32,7 +32,14 @@
                     <v-btn
                             small depressed color="primary"
                             @click="selected = entry; step = 'quantity'">
-                        Select
+                        Sell
+                    </v-btn>
+                    
+                    <v-btn
+                            small depressed color="primary"
+                            class="ml-3"
+                            @click="$emit('sell', entry.symbol, entry.quantityInCargo)">
+                        Sell {{ entry.quantityInCargo }}
                     </v-btn>
                 </v-list-item>
             </v-list>
@@ -47,7 +54,7 @@
                         {{ selected.symbol }}
                     </v-list-item-title>
                     <v-list-item-subtitle>
-                        {{ cargo.find(entry => entry.good == selected.symbol).quantity }} Available to Sell
+                        {{ selected.quantityInCargo }} Available to Sell
                     </v-list-item-subtitle>
                 </v-list-item-content>
 
@@ -62,7 +69,7 @@
                 v-model="quantity"
                 type="number"
                 :min="0"
-                :max="cargo.find(entry => entry.good == selected.symbol).quantity"
+                :max="selected.quantityInCargo"
                 label="Quantity"
                 outlined
                 hide-details />
@@ -120,7 +127,11 @@
                     ...(this.market.data.planet.marketplace.filter(entry => this.cargo.some(cargoEntry => cargoEntry.good == entry.symbol)))
                 ];
 
-                entries.sort((a, b) => a.symbol.localeCompare(b.symbol))
+                entries.sort((a, b) => a.symbol.localeCompare(b.symbol));
+
+                entries.forEach(entry => {
+                    entry.quantityInCargo = this.cargo.find(cargoEntry => cargoEntry.good == entry.symbol).quantity;
+                });
 
                 return entries;
             }
