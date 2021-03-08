@@ -22,7 +22,7 @@
                         two-line>
                     <v-list-item-content>
                         <v-list-item-title>
-                            {{ entry.symbol }}
+                            {{ prettifyEnum(entry.symbol) }}
                         </v-list-item-title>
                         <v-list-item-subtitle>
                             Buying at {{ abbreviate(entry.pricePerUnit) }} Credits
@@ -51,7 +51,7 @@
             <v-list-item two-line>
                 <v-list-item-content>
                     <v-list-item-title>
-                        {{ prettifyEnum(entry.symbol) }}
+                        {{ prettifyEnum(selected.symbol) }}
                     </v-list-item-title>
                     <v-list-item-subtitle>
                         {{ selected.quantityInCargo }} Available to Sell

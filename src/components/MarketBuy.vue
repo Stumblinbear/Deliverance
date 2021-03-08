@@ -21,7 +21,7 @@
                             {{ prettifyEnum(entry.symbol) }}
                         </v-list-item-title>
                         <v-list-item-subtitle>
-                            {{ entry.available }} Available at {{ abbreviate(entry.pricePerUnit) }} Credits each
+                            {{ abbreviate(entry.quantityAvailable) }} Available at {{ abbreviate(entry.pricePerUnit) }} Credits each
                         </v-list-item-subtitle>
                     </v-list-item-content>
 
@@ -53,16 +53,15 @@
             </v-list>
       </v-window-item>
 
-      <v-window-item v-if="selected"
-            value="quantity">
+      <v-window-item value="quantity">
         <v-card color="grey darken-3" class="ma-4">
             <v-list-item two-line>
                 <v-list-item-content>
                     <v-list-item-title>
-                        {{ selected.symbol }}
+                        {{ prettifyEnum(selected.symbol) }}
                     </v-list-item-title>
                     <v-list-item-subtitle>
-                        {{ selected.available }} Available to Buy
+                        {{ selected.quantityAvailable }} Available to Buy
                     </v-list-item-subtitle>
                 </v-list-item-content>
 
@@ -131,7 +130,7 @@
         },
         data: () => ({
             step: 'select',
-            selected: null,
+            selected: { symbol: '', quantityAvailable: 1, pricePerUnit: 1, volumePerUnit: 1 },
             quantity: 0
         }),
         computed: {

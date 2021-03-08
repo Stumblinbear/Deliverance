@@ -73,7 +73,7 @@
                                         {{ prettifyEnum(symbol) }}
                                     </v-list-item-title>
                                     <v-list-item-subtitle>
-                                        {{ entry.available }} Available at {{ abbreviate(entry.pricePerUnit) }} Credits each on {{ entry.location.symbol }}
+                                        {{ abbreviate(entry.quantityAvailable) }} Available at {{ abbreviate(entry.pricePerUnit) }} Credits each on {{ entry.location.symbol }}
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
@@ -141,7 +141,7 @@
 
                 for(let loc of this.locations) {
                     for(let entry of loc.marketplace) {
-                        if(entry.available == 0) continue;
+                        if(entry.quantityAvailable == 0) continue;
 
                         if(bestBuy[entry.symbol] && bestBuy[entry.symbol].pricePerUnit < entry.pricePerUnit) continue;
 
@@ -151,7 +151,7 @@
                                 type: loc.type
                             },
                             pricePerUnit: entry.pricePerUnit,
-                            available: entry.available
+                            quantityAvailable: entry.quantityAvailable
                         }
                     }
                 }
@@ -162,7 +162,7 @@
 
                 for(let loc of this.locations) {
                     for(let entry of loc.marketplace) {
-                        if(entry.available == 0) continue;
+                        if(entry.quantityAvailable == 0) continue;
 
                         if(bestSell[entry.symbol] && bestSell[entry.symbol].pricePerUnit > entry.pricePerUnit) continue;
 
@@ -172,7 +172,7 @@
                                 type: loc.type
                             },
                             pricePerUnit: entry.pricePerUnit,
-                            available: entry.available
+                            quantityAvailable: entry.quantityAvailable
                         }
                     }
                 }
