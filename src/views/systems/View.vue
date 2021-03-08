@@ -69,7 +69,8 @@
                     </v-alert>
                 </v-col>
                 <template v-else>
-                    <v-col v-if="shipLocations.inTransit.length > 0">
+                    <v-col v-if="shipLocations.inTransit.length > 0"
+                            cols="12" md="6">
                         <v-card>
                             <v-list-item>
                                 <v-list-item-content>

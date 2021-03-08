@@ -34,7 +34,8 @@
                 </v-alert>
             </v-col>
             <template v-else>
-                <v-col v-if="shipSystems.inTransit.length > 0">
+                <v-col v-if="shipSystems.inTransit.length > 0"
+                        cols="12" md="6">
                     <v-card>
                         <v-list>
                             <v-list-item>
