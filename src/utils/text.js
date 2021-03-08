@@ -27,7 +27,7 @@ export const abbreviate = {
                 rounded = num / 1e3;
             }
         
-            return rounded + abbr;
+            return parseFloat(rounded.toFixed(2)) + abbr;
         }
     }
 };
