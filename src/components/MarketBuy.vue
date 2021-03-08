@@ -40,6 +40,7 @@
                         <v-btn
                                 small depressed color="primary"
                                 class="ml-3"
+                                style="width:25%"
                                 @click="$emit('buy', entry.symbol, maximumPurchase(entry))">
                             Buy {{ maximumPurchase(entry) }}
                         </v-btn>

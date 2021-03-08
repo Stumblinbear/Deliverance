@@ -38,6 +38,7 @@
                     <v-btn
                             small depressed color="primary"
                             class="ml-3"
+                            style="width:25%"
                             @click="$emit('sell', entry.symbol, entry.quantityInCargo)">
                         Sell {{ entry.quantityInCargo }}
                     </v-btn>
