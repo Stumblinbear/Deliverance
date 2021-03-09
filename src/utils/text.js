@@ -14,16 +14,16 @@ export const abbreviate = {
             var rounded = num;
         
             if(num >= 1e12) {
-                abbr = 'T';
+                abbr = ' T';
                 rounded = num / 1e12;
             }else if(num >= 1e9) {
-                abbr = 'B';
+                abbr = ' B';
                 rounded = num / 1e9;
             }else if(num >= 1e6) {
-                abbr = 'M';
+                abbr = ' M';
                 rounded = num / 1e6;
             }else if(num >= 1e3) {
-                abbr = 'K';
+                abbr = 'k';
                 rounded = num / 1e3;
             }
         

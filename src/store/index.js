@@ -6,6 +6,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
+    outstandingRequests: 0,
+    
     accounts: [ ],
 
     username: '',
@@ -52,6 +54,18 @@ if(localStorage.getItem('accounts')) {
 if(localStorage.getItem('username') && localStorage.getItem('token')) {
   store.dispatch('SET_AUTH', [ localStorage.getItem('username'), localStorage.getItem('token') ]);
 }
+
+function reduceOutstanding() {
+  // Add a slight delay so the loading spinner looks like a loading spinner
+  setTimeout(() => {
+    store.state.outstandingRequests--;
+  }, 500);
+}
+
+api.interceptors.request.use(req => { store.state.outstandingRequests++; return req; });
+api.interceptors.response.use(res => { reduceOutstanding(); return res; },
+                              err => { reduceOutstanding(); throw err; });
+  
 
 api.interceptors.response.use(null,  err => {
   if(err.response && err.response.status == 401) {

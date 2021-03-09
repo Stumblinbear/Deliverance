@@ -40,7 +40,7 @@
 
         <v-spacer />
       
-        <v-progress-circular v-if="$chimera.$loading"
+        <v-progress-circular v-if="$store.state.outstandingRequests > 0"
           class="mr-3"
           color="primary"
           indeterminate
