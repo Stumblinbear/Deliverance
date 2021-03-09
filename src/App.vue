@@ -21,7 +21,7 @@
       <login />
     </v-dialog>
     <template v-else>
-      <v-app-bar app flat>
+      <v-app-bar dense fixed flat>
         <v-app-bar-nav-icon
           class="d-flex d-md-none"
           @click="drawer = !drawer" />
@@ -106,6 +106,22 @@
 </template>
 
 <style>
+  html {
+    max-height: 100vh;
+
+    overflow-y: auto;
+
+    scrollbar-color: #32303b #1c1b23;
+    scrollbar-width: thin;
+  }
+
+  .v-main {
+    height: calc(100vh - 48px);
+    margin-top: 48px;
+    
+    overflow-y: auto;
+  }
+
   .bar-logo {
     height: 32px;
 
