@@ -12,7 +12,7 @@
     <v-list v-else
             dense>
         <v-list-item
-                v-for="(location, i) in sortOrbits(locations.data.locations)" :key="i"
+                v-for="(location, i) in sortOrbits(locations.data.locations, originLocation)" :key="i"
                 two-line>
             <v-list-item-content>
                 <v-list-item-title>
@@ -22,9 +22,10 @@
                     {{ location.symbol }}
                 </v-list-item-subtitle>
             </v-list-item-content>
-
+            
             <v-btn
                     small depressed color="primary"
+                    :disabled="location.symbol == origin"
                     @click="$emit('select', location.symbol)">
                 Select
             </v-btn>
@@ -50,6 +51,11 @@
                     url: '/game/systems/' + this.origin + '/locations',
                     interval: 1000 * 60
                 }
+            }
+        },
+        computed: {
+            originLocation() {
+                return this.locations.data.locations.find(loc => loc.symbol == this.origin);
             }
         }
     }

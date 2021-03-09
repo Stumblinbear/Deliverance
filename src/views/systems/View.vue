@@ -20,7 +20,7 @@
                     <div class="pt-4">
                         <small>{{ location.symbol }}</small>
                         <br />
-                        <small>{{ getOrbitalDistance(location).toFixed(1) }} DU</small>
+                        <small>{{ parseFloat(getDistance(location).toFixed(1)) }} DU</small>
                     </div>
                 </v-col>
             </v-row>
