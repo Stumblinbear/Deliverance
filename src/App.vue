@@ -69,8 +69,10 @@
               <v-list-item-title>{{ account[0] }}</v-list-item-title>
             </v-list-item>
 
+            <v-divider v-if="$store.state.accounts.length > 1" />
+
             <v-list-item @click="$store.dispatch('SET_AUTH', [ '', '' ])">
-              <v-list-item-title>Log out</v-list-item-title>
+              <v-list-item-title>Switch Account</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
