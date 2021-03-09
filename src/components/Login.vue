@@ -1,5 +1,13 @@
 <template>
     <v-card v-if="tabs != null">
+        <div class="py-5">
+            <img
+                src="/assets/logo.png"
+                class="d-block logo logo-lg mx-auto" />
+        </div>
+
+        <v-divider />
+        
         <v-tabs v-model="tabs" fixed-tabs>
           <v-tab>
             Switch

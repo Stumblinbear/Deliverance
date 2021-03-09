@@ -17,7 +17,7 @@
     </v-dialog>
 
     <v-dialog v-if="!$store.state.username || !$store.state.token"
-        :value="true" persistent max-width="350">
+        :value="true" persistent max-width="375">
       <login />
     </v-dialog>
     <template v-else>
@@ -28,7 +28,7 @@
 
         <img
           src="/assets/logo.png"
-          class="bar-logo mr-5 d-none d-sm-flex" />
+          class="logo logo-sm mr-5 d-none d-sm-flex" />
 
         <div class="d-none d-md-flex">
           <v-btn
@@ -122,14 +122,20 @@
     overflow-y: auto;
   }
 
-  .bar-logo {
-    height: 32px;
-
+  .logo {
     -ms-interpolation-mode: nearest-neighbor;
     image-rendering: crisp-edges;
     image-rendering: pixelated;
 
     filter: drop-shadow(0 4px 0 #000)
+  }
+
+  .logo.logo-sm {
+    height: 32px;
+  }
+
+  .logo.logo-lg {
+    height: 48px;
   }
 </style>
 
