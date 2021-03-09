@@ -22,7 +22,7 @@
                         :small="!dense" :x-small="dense"
                         label
                         class="mr-2">
-                    {{ cargo.good }} x{{ cargo.quantity }}
+                    {{ prettifyEnum(cargo.good) }} x{{ cargo.quantity }}
                 </v-chip>
             </v-list-item-subtitle>
         </v-list-item-content>
@@ -231,6 +231,8 @@
 </style>
 
 <script>
+    import { prettifyEnum } from '@/utils/text';
+
     import ShipImage from '@/components/ShipImage.vue';
     import SelectLocation from '@/components/SelectLocation.vue';
     import MarketBuy from '@/components/MarketBuy.vue';
@@ -238,6 +240,7 @@
 
     export default {
         components: { ShipImage, SelectLocation, MarketBuy, MarketSell },
+        mixins: [ prettifyEnum ],
         props: {
             ship: {
                 type: Object
