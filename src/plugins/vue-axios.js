@@ -3,9 +3,7 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import rateLimit from 'axios-rate-limit';
 
-const api = rateLimit(axios.create({
-    baseURL: 'https://api.spacetraders.io'
-}), { maxRequests: 10, perMilliseconds: 10 * 1000 });
+const api = rateLimit(axios.create(), { maxRequests: 10, perMilliseconds: 10 * 1000 });
 
 Vue.use(VueAxios, api);
 

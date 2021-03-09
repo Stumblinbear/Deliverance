@@ -7,7 +7,7 @@ import './plugins/vue-axios';
 import './plugins/vue-chimera';
 import './plugins/vue-timeago';
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   vuetify,

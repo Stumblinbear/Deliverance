@@ -47,6 +47,8 @@ const store = new Vuex.Store({
   }
 });
 
+api.defaults.baseURL = new URLSearchParams(window.location.search).get('url') || 'https://api.spacetraders.io';
+
 if(localStorage.getItem('accounts')) {
   store.dispatch('SET_ACCOUNTS', JSON.parse(localStorage.getItem('accounts')));
 }
