@@ -117,7 +117,7 @@
 
                     this.$store.dispatch('SET_AUTH', [ this.username, result.data.token ]);
                 } catch(e) {
-                    this.error = e.response.data;
+                    this.error = e.response.data.error.message;
                 }
 
                 this.loading = false;

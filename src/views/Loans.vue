@@ -21,7 +21,7 @@
                         v-for="(loan, i) in user.data.user.loans" :key="i"
                         class="mb-4">
                     
-                    <template v-if="loan.status == 'CURRENT'">
+                    <template v-if="loan.status == 'CURRENT' || loan.status == 'LATE' || true">
                         <v-card-text class="pb-0">
                             <v-row>
                                 <v-col>
