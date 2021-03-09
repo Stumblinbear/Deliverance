@@ -27,8 +27,7 @@
         </v-sheet>
 
         <v-container>
-            <v-row
-                    align="center">
+            <v-row align="center">
                 <v-col
                         cols="12" sm="9"
                         class="text-h3 text-center text-sm-left">
@@ -44,7 +43,7 @@
                 </v-col>
             </v-row>
 
-            <v-row>
+            <v-row justify="center">
                 <v-col v-if="!ships.data">
                     <v-row>
                         <v-col cols="12" md="6">
