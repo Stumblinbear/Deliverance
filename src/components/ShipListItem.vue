@@ -99,30 +99,28 @@
 
                     <v-divider />
 
-                    <v-expand-transition mode="in">
-                        <v-card-text v-if="move.loading"
-                                class="text-center pt-6">
-                            <v-progress-circular
-                                color="primary"
-                                indeterminate
-                                size="24"
-                                width="2" />
+                    <v-card-text v-if="move.loading"
+                            class="text-center pt-6">
+                        <v-progress-circular
+                            color="primary"
+                            indeterminate
+                            size="24"
+                            width="2" />
+                    </v-card-text>
+                    <template v-else>
+                        <v-alert v-if="move.error"
+                                type="error"
+                                tile
+                                class="mb-0">
+                            {{ move.error }}
+                        </v-alert>
+                        
+                        <v-card-text class="pa-0">
+                            <select-location
+                                :origin="ship.location"
+                                @select="moveShip" />
                         </v-card-text>
-                        <template v-else>
-                            <v-alert v-if="move.error"
-                                    type="error"
-                                    tile
-                                    class="mb-0">
-                                {{ move.error }}
-                            </v-alert>
-                            
-                            <v-card-text class="pa-0">
-                                <select-location
-                                    :origin="ship.location"
-                                    @select="moveShip" />
-                            </v-card-text>
-                        </template>
-                    </v-expand-transition>
+                    </template>
                 </v-card>
             </v-dialog>
 
@@ -137,32 +135,30 @@
 
                     <v-divider />
 
-                    <v-expand-transition mode="in">
-                        <v-card-text v-if="buy.loading"
-                                class="text-center pt-6">
-                            <v-progress-circular
-                                color="primary"
-                                indeterminate
-                                size="24"
-                                width="2" />
+                    <v-card-text v-if="buy.loading"
+                            class="text-center pt-6">
+                        <v-progress-circular
+                            color="primary"
+                            indeterminate
+                            size="24"
+                            width="2" />
+                    </v-card-text>
+                    <template v-else>
+                        <v-alert v-if="buy.error"
+                                type="error"
+                                tile
+                                class="mb-0">
+                            {{ buy.error }}
+                        </v-alert>
+                        
+                        <v-card-text class="pa-0">
+                            <market-buy
+                                :origin="ship.location"
+                                :credits="user.data ? user.data.user.credits : undefined"
+                                :remaining-cargo="ship.maxCargo - ship.cargo.reduce((acc, entry) => acc + entry.totalVolume, 0)"
+                                @buy="purchaseCargo" />
                         </v-card-text>
-                        <template v-else>
-                            <v-alert v-if="buy.error"
-                                    type="error"
-                                    tile
-                                    class="mb-0">
-                                {{ buy.error }}
-                            </v-alert>
-                            
-                            <v-card-text class="pa-0">
-                                <market-buy
-                                    :origin="ship.location"
-                                    :credits="user.data ? user.data.user.credits : undefined"
-                                    :remaining-cargo="ship.maxCargo - ship.cargo.reduce((acc, entry) => acc + entry.totalVolume, 0)"
-                                    @buy="purchaseCargo" />
-                            </v-card-text>
-                        </template>
-                    </v-expand-transition>
+                    </template>
                 </v-card>
             </v-dialog>
 
@@ -177,31 +173,29 @@
 
                     <v-divider />
 
-                    <v-expand-transition mode="in">
-                        <v-card-text v-if="sell.loading"
-                                class="text-center pt-6">
-                            <v-progress-circular
-                                color="primary"
-                                indeterminate
-                                size="24"
-                                width="2" />
+                    <v-card-text v-if="sell.loading"
+                            class="text-center pt-6">
+                        <v-progress-circular
+                            color="primary"
+                            indeterminate
+                            size="24"
+                            width="2" />
+                    </v-card-text>
+                    <template v-else>
+                        <v-alert v-if="sell.error"
+                                type="error"
+                                tile
+                                class="mb-0">
+                            {{ sell.error }}
+                        </v-alert>
+                        
+                        <v-card-text class="pa-0">
+                            <market-sell
+                                :origin="ship.location"
+                                :cargo="ship.cargo"
+                                @sell="sellCargo" />
                         </v-card-text>
-                        <template v-else>
-                            <v-alert v-if="sell.error"
-                                    type="error"
-                                    tile
-                                    class="mb-0">
-                                {{ sell.error }}
-                            </v-alert>
-                            
-                            <v-card-text class="pa-0">
-                                <market-sell
-                                    :origin="ship.location"
-                                    :cargo="ship.cargo"
-                                    @sell="sellCargo" />
-                            </v-card-text>
-                        </template>
-                    </v-expand-transition>
+                    </template>
                 </v-card>
             </v-dialog>
         </template>
