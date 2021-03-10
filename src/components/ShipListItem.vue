@@ -210,7 +210,7 @@
 
                 <v-divider />
 
-                {{ flightPlan }}
+                {{ flightPlan.data.flightPlan }}
             </v-card>
         </v-dialog>
     </v-list-item>
@@ -254,7 +254,7 @@
             flightPlan() {
                 return {
                     key: this.$store.state.username + '-flight-plans',
-                    url: '/users/' + this.$store.state.username + '/flight-plans',
+                    url: '/users/' + this.$store.state.username + '/flight-plans/' + this.ship.flightPlanId,
                     auto: false
                 }
             }
