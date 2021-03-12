@@ -201,18 +201,39 @@
         </template>
         <v-dialog v-else
                 v-model="flight.reveal"
-                width="500"
+                width="300"
                 scrollable>
-            <v-card>
-                <v-card-title class="headline">
-                    Flight Plan
+            <v-card v-if="flightPlan.data">
+                <v-card-title class="d-block text-h4 text-center">
+                    Arrives 
                 </v-card-title>
+
+                <v-card-text class="text-h6 text-center">
+                    <timeago :datetime="flightPlan.data.flightPlan.arrivesAt" :auto-update="1" />
+                </v-card-text>
 
                 <v-divider />
 
-                <div v-if="flightPlan.data">
-                    {{ flightPlan.data.flightPlan }}
-                </div>
+                <v-list class="py-0">
+                    <v-list-item>
+                        <v-list-item-title>Fuel Consumed</v-list-item-title>
+                        <v-list-item-subtitle class="text-right">
+                            {{ flightPlan.data.flightPlan.fuelConsumed }}
+                        </v-list-item-subtitle>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-title>Destination</v-list-item-title>
+                        <v-list-item-subtitle class="text-right">
+                            {{ flightPlan.data.flightPlan.destination }}
+                        </v-list-item-subtitle>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-title>Distance</v-list-item-title>
+                        <v-list-item-subtitle class="text-right">
+                            {{ flightPlan.data.flightPlan.distance }} DU
+                        </v-list-item-subtitle>
+                    </v-list-item>
+                </v-list>
             </v-card>
         </v-dialog>
     </v-list-item>
