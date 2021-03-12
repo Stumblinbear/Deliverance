@@ -210,7 +210,9 @@
 
                 <v-divider />
 
-                {{ flightPlan.data.flightPlan }}
+                <div v-if="flightPlan.data">
+                    {{ flightPlan.data.flightPlan }}
+                </div>
             </v-card>
         </v-dialog>
     </v-list-item>
@@ -254,7 +256,7 @@
             flightPlan() {
                 return {
                     key: this.$store.state.username + '-flight-plans',
-                    url: '/users/' + this.$store.state.username + '/flight-plans/' + this.ship.flightPlanId,
+                    url: '/users/' + this.$store.state.username + '/flight-plans/' + (this.ship?.flightPlanId),
                     auto: false
                 }
             }
@@ -280,6 +282,15 @@
                 loading: false
             }
         }),
+        watch: {
+            'move.reveal'(val) {
+                if(val) this.move.error = null;
+            }, 'buy.reveal'(val) {
+                if(val) this.buy.error = null;
+            }, 'sell.reveal'(val) {
+                if(val) this.sell.error = null;
+            }
+        },
         methods: {
             async moveShip(destination) {
                 this.move.loading = true;
