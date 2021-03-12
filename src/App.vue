@@ -63,6 +63,12 @@
           </template>
 
           <v-list dense tile class="py-0">
+            <v-list-item @click="accountDialog = true">
+              <v-list-item-title>View Account</v-list-item-title>
+            </v-list-item>
+
+            <v-divider />
+
             <v-list-item
                 v-for="(account, i) in $store.state.accounts.filter(auth => auth[1] != $store.state.token)" :key="i"
                 @click="$store.dispatch('SET_AUTH', account)">
@@ -103,6 +109,27 @@
       <v-main>
         <router-view />
       </v-main>
+      
+      <v-dialog v-model="accountDialog"
+              width="500"
+              scrollable>
+          <v-card>
+              <v-card-title class="headline">
+                Account
+              </v-card-title>
+
+              <v-divider />
+
+              <v-card-text class="pt-5">
+                <v-text-field
+                  label="Token"
+                  :value="$store.state.token"
+                  readonly
+                  outlined
+                  hide-details />
+              </v-card-text>
+          </v-card>
+      </v-dialog>
     </template>
   </v-app>
 </template>
@@ -171,7 +198,9 @@
         [ 'Ships', '/ships' ],
         [ 'Systems', '/systems' ],
         [ 'Market', '/market' ]
-      ]
+      ],
+
+      accountDialog: false
     })
   }
 </script>
