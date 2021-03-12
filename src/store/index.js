@@ -57,7 +57,7 @@ const store = new Vuex.Store({
 
         store.state.credits = data.user.credits;
 
-        setTimeout(() => store.dispatch('UPDATE_CREDITS'), 10 * 1000);
+        store.state.creditsTimeout = setTimeout(() => store.dispatch('UPDATE_CREDITS'), 10 * 1000);
       }
     }
   }
