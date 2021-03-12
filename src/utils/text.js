@@ -2,6 +2,7 @@
 export const prettifyEnum = {
     methods: {
         prettifyEnum(type) {
+            if(!type) return 'N/A';
             return type.replace('_', ' ').split(' ').map(v => v[0] + v.substring(1).toLowerCase()).join(' ');
         }
     }
@@ -10,6 +11,9 @@ export const prettifyEnum = {
 export const abbreviate = {
     methods: {
         abbreviate(num) {
+            if(num === undefined || num === null) return 'N/A';
+            if(Number.isNaN(num)) return 'NaN';
+
             let abbr = '';
             var rounded = num;
         
