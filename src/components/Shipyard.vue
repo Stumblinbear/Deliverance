@@ -48,7 +48,7 @@
                         :ship="ship"
                         :system="system"
                         :location="location"
-                        :max-credits="user.data.user.credits" />
+                        :max-credits="$store.state.credits" />
                 </v-col>
             </v-row>
         </v-col>
@@ -75,13 +75,6 @@
             }
         },
         chimera: {
-            user() {
-                return {
-                    key: 'user-' + this.$store.state.username,
-                    url: '/users/' + this.$store.state.username,
-                    interval: 1000 * 60
-                }
-            },
             ships() {
                 return {
                     key: this.$store.state.username + '-ships',

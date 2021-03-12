@@ -154,7 +154,7 @@
                         <v-card-text class="pa-0">
                             <market-buy
                                 :origin="ship.location"
-                                :credits="user.data ? user.data.user.credits : undefined"
+                                :credits="$store.state.credits"
                                 :remaining-cargo="ship.maxCargo - ship.cargo.reduce((acc, entry) => acc + entry.totalVolume, 0)"
                                 @buy="purchaseCargo" />
                         </v-card-text>
@@ -247,12 +247,6 @@
             }
         },
         chimera: {
-            user() {
-                return {
-                    key: 'user-' + this.$store.state.username,
-                    url: '/users/' + this.$store.state.username
-                }
-            },
             flightPlan() {
                 return {
                     key: this.$store.state.username + '-flight-plans',
@@ -320,6 +314,8 @@
                         good: symbol,
                         quantity
                     });
+                    
+                    await this.$store.dispatch('UPDATE_CREDITS');
 
                     this.$emit('refresh');
                     
@@ -339,6 +335,8 @@
                         good: symbol,
                         quantity
                     });
+                    
+                    await this.$store.dispatch('UPDATE_CREDITS');
 
                     this.$emit('refresh');
                     

@@ -48,7 +48,7 @@
           width="2" />
 
         <v-chip to="/loans">
-          {{ user.data ? abbreviate(user.data.user.credits) : 'N/A' }} Credits
+          {{ abbreviate($store.state.credits) }} Credits
         </v-chip>
 
         <v-menu offset-y rounded="b-md">
@@ -181,14 +181,6 @@
         key: 'status',
         url: '/game/status',
         interval: 1000 * 60
-      },
-
-      user() {
-        return {
-          key: 'user-' + this.$store.state.username,
-          url: '/users/' + this.$store.state.username,
-          interval: 1000 * 30
-        }
       }
     },
     data: () => ({

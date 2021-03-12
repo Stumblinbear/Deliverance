@@ -240,8 +240,7 @@
                         location
                     });
 
-                    // Cache busting. Force a reload of the endpoints.
-                    await this.user.reload(true);
+                    await this.$store.dispatch('UPDATE_CREDITS');
                 } catch(e) {
                     console.error(e);
                 }

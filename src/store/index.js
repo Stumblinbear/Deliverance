@@ -11,7 +11,10 @@ const store = new Vuex.Store({
     accounts: [ ],
 
     username: '',
-    token: ''
+    token: '',
+
+    credits: null,
+    creditsTimeout: null
   },
   mutations: {
 
@@ -19,9 +22,7 @@ const store = new Vuex.Store({
   actions: {
     SET_ACCOUNTS(store, accounts) {
       store.state.accounts = accounts;
-    },
-
-    ADD_ACCOUNT(store, [ username, token ]) {
+    }, ADD_ACCOUNT(store, [ username, token ]) {
       store.state.accounts.push([ username, token ]);
       
       localStorage.setItem('accounts', JSON.stringify(store.state.accounts));
@@ -41,7 +42,22 @@ const store = new Vuex.Store({
       localStorage.setItem('token', token);
 
       if(username != '' && token != '' && !store.state.accounts.some((auth) => auth[0] == username && auth[1] == token)) {
-        this.dispatch('ADD_ACCOUNT', [ username, token ]);
+        store.dispatch('ADD_ACCOUNT', [ username, token ]);
+      }
+
+      store.dispatch('UPDATE_CREDITS');
+    },
+
+    async UPDATE_CREDITS(store) {
+      if(store.state.creditsTimeout != null)
+        clearTimeout(store.state.creditsTimeout);
+
+      if(store.state.username && store.state.token) {
+        const data = (await api.get('/users/' + store.state.username)).data;
+
+        store.state.credits = data.user.credits;
+
+        setTimeout(() => store.dispatch('UPDATE_CREDITS'), 10 * 1000);
       }
     }
   }

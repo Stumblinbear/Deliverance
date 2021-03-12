@@ -162,6 +162,7 @@
                     // Cache busting. Force a reload of the endpoints.
                     await this.user.reload(true);
                     await this.loans.reload(true);
+                    await this.$store.dispatch('UPDATE_CREDITS');
                 } catch(e) {
                     console.error(e);
                 }
@@ -177,6 +178,7 @@
                     // Cache busting. Force a reload of the endpoints.
                     await this.user.reload(true);
                     await this.loans.reload(true);
+                    await this.$store.dispatch('UPDATE_CREDITS');
                 } catch(e) {
                     console.error(e);
                 }
