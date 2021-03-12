@@ -159,7 +159,7 @@
                     }
                 }
 
-                return maximum;
+                return Math.min(maximum, entry.quantityAvailable);
             }
         }
     }
