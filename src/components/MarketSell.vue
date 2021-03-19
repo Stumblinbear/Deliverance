@@ -6,11 +6,11 @@
             class="mb-2" type="list-item-avatar-two-line" />
     </div>
     <v-alert v-else-if="market.data.location.marketplace.length == 0"
-            type="error" tile>
+            tile class="mb-0">
         No market data could be found.
     </v-alert>
     <v-alert v-else-if="marketEntries.length == 0"
-            type="error" tile>
+            tile class="mb-0">
         You have no cargo to sell.
     </v-alert>
     <v-window v-else

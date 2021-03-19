@@ -51,10 +51,18 @@
                     <v-btn
                             large tile
                             elevation="0"
+                            color="warning"
+                            class="shrink"
+                            @click="warp.reveal = true; reveal = false">
+                        Warp
+                    </v-btn>
+                    <v-btn
+                            large tile
+                            elevation="0"
                             color="green"
                             class="grow"
-                            @click="move.reveal = true; reveal = false">
-                        Move
+                            @click="travel.reveal = true; reveal = false">
+                        Travel
                     </v-btn>
                     <v-btn
                             large tile
@@ -69,7 +77,6 @@
                             elevation="0"
                             color="accent"
                             class="grow"
-                            :disabled="ship.cargo.length == 0"
                             @click="sell.reveal = true; reveal = false">
                         Sell
                     </v-btn>
@@ -89,17 +96,17 @@
 
         <template v-if="ship.location">
             <v-dialog
-                    v-model="move.reveal"
+                    v-model="travel.reveal"
                     width="500"
                     scrollable>
                 <v-card>
                     <v-card-title class="headline">
-                        Move Ship
+                        Travel
                     </v-card-title>
 
                     <v-divider />
 
-                    <v-card-text v-if="move.loading"
+                    <v-card-text v-if="travel.loading"
                             class="text-center pt-6">
                         <v-progress-circular
                             color="primary"
@@ -108,11 +115,11 @@
                             width="2" />
                     </v-card-text>
                     <template v-else>
-                        <v-alert v-if="move.error"
+                        <v-alert v-if="travel.error"
                                 type="error"
                                 tile
                                 class="mb-0">
-                            {{ move.error }}
+                            {{ travel.error.message }}
                         </v-alert>
                         
                         <v-card-text class="pa-0">
@@ -122,6 +129,74 @@
                                 @select="moveShip" />
                         </v-card-text>
                     </template>
+                </v-card>
+            </v-dialog>
+
+            <v-dialog
+                    v-model="warp.reveal"
+                    width="500"
+                    scrollable>
+                <v-card v-if="!warp.error || warp.error.code != 418">
+                    <v-card-title class="headline">
+                        Enter the Wormhole
+                    </v-card-title>
+
+                    <v-divider />
+
+                    <location-image
+                        class="mx-auto"
+                        :location="{ type: 'WORMHOLE', symbol: ship.location }"
+                        :scale="2" />
+
+                    <v-card-text v-if="warp.loading"
+                            class="text-center pt-6">
+                        <v-progress-circular
+                            color="primary"
+                            indeterminate
+                            size="24"
+                            width="2" />
+                        
+                        <div class="mt-4">Science waits for nobody.</div>
+                    </v-card-text>
+                    <template v-else>
+                        <v-alert v-if="warp.error"
+                                type="error"
+                                tile
+                                class="mb-0">
+                            {{ warp.error.message }}
+                        </v-alert>
+                        <v-card-text v-else>
+                            <div class="text-center">
+                                Are you absolutely sure you wish to enter the wormhole? Our sensors indicate a <b>HIGH PROPABILITY</b> of a complete loss of your ship.
+                            </div>
+                            <div class="mt-4 text-center">
+                                <v-btn
+                                        depressed color="warning"
+                                        @click="warpShip">
+                                    Brave the Void
+                                </v-btn>
+                            </div>
+                        </v-card-text>
+                    </template>
+                </v-card>
+                <v-card v-else>
+                    <v-card-title class="headline">
+                        I am a Teapot
+                    </v-card-title>
+
+                    <v-divider />
+
+                    <img
+                        src="/assets/teapot.png"
+                        class="mx-auto"
+                        width="35%" />
+
+                    <v-alert
+                            type="error"
+                            tile
+                            class="mb-0">
+                        {{ warp.error.message }}
+                    </v-alert>
                 </v-card>
             </v-dialog>
 
@@ -149,7 +224,7 @@
                                 type="error"
                                 tile
                                 class="mb-0">
-                            {{ buy.error }}
+                            {{ buy.error.message }}
                         </v-alert>
                         
                         <v-card-text class="pa-0">
@@ -169,7 +244,7 @@
                     scrollable>
                 <v-card>
                     <v-card-title class="headline">
-                        Sell Cargo
+                        Sell
                     </v-card-title>
 
                     <v-divider />
@@ -187,8 +262,24 @@
                                 type="error"
                                 tile
                                 class="mb-0">
-                            {{ sell.error }}
+                            {{ sell.error.message }}
                         </v-alert>
+                        
+                        <v-list-item>
+                            <v-list-item-title>
+                                Sell the Ship
+                            </v-list-item-title>
+                            <v-list-item-action>
+                                <v-btn
+                                        small depressed color="primary"
+                                        :loading="sell.loading"
+                                        @click="sellShip">
+                                    Sell
+                                </v-btn>
+                            </v-list-item-action>
+                        </v-list-item>
+
+                        <v-divider />
                         
                         <v-card-text class="pa-0">
                             <market-sell
@@ -250,17 +341,21 @@
 
 <script>
     import { prettifyEnum } from '@/utils/text';
-
+    
     import ShipImage from '@/components/ShipImage.vue';
     import SelectLocation from '@/components/SelectLocation.vue';
     import MarketBuy from '@/components/MarketBuy.vue';
     import MarketSell from '@/components/MarketSell.vue';
+    import LocationImage from '@/components/LocationImage.vue';
 
     export default {
-        components: { ShipImage, SelectLocation, MarketBuy, MarketSell },
+        components: { ShipImage, SelectLocation, MarketBuy, MarketSell, LocationImage },
         mixins: [ prettifyEnum ],
         props: {
             ship: {
+                type: Object
+            },
+            location: {
                 type: Object
             },
             dense: {
@@ -284,7 +379,11 @@
                 reveal: false
             },
 
-            move: {
+            travel: {
+                reveal: false,
+                error: null,
+                loading: false
+            }, warp: {
                 reveal: false,
                 error: null,
                 loading: false
@@ -299,8 +398,10 @@
             }
         }),
         watch: {
-            'move.reveal'(val) {
-                if(val) this.move.error = null;
+            'travel.reveal'(val) {
+                if(val) this.travel.error = null;
+            }, 'warp.reveal'(val) {
+                if(val) this.warp.error = null;
             }, 'buy.reveal'(val) {
                 if(val) this.buy.error = null;
             }, 'sell.reveal'(val) {
@@ -309,8 +410,8 @@
         },
         methods: {
             async moveShip(destination) {
-                this.move.loading = true;
-                this.move.error = null;
+                this.travel.loading = true;
+                this.travel.error = null;
 
                 try {
                     await this.axios.post('/users/' + this.$store.state.username + '/flight-plans', {
@@ -320,12 +421,29 @@
 
                     this.$emit('refresh');
                     
-                    this.move.reveal = false;
+                    this.travel.reveal = false;
                 } catch(e) {
-                    this.move.error = e.response.data.error.message;
+                    this.travel.error = e.response.data.error;
                 }
                 
-                this.move.loading = false;
+                this.travel.loading = false;
+            }, async warpShip() {
+                this.warp.loading = true;
+                this.warp.error = null;
+
+                try {
+                    await this.axios.post('/users/' + this.$store.state.username + '/warp-jump', {
+                        shipId: this.ship.id
+                    });
+
+                    this.$emit('refresh');
+                    
+                    this.warp.reveal = false;
+                } catch(e) {
+                    this.warp.error = e.response.data.error;
+                }
+                
+                this.warp.loading = false;
             }, async purchaseCargo(symbol, quantity) {
                 this.buy.loading = true;
                 this.buy.error = null;
@@ -343,10 +461,27 @@
                     
                     this.buy.reveal = false;
                 } catch(e) {
-                    this.buy.error = e.response.data.error.message;
+                    this.buy.error = e.response.data.error;
                 }
                 
                 this.buy.loading = false;
+            }, async sellShip() {
+                this.sell.loading = true;
+                this.sell.error = null;
+
+                try {
+                    await this.axios.delete('/users/' + this.$store.state.username + '/ships/' + this.ship.id);
+                    
+                    await this.$store.dispatch('UPDATE_CREDITS');
+
+                    this.$emit('refresh');
+                    
+                    this.sell.reveal = false;
+                } catch(e) {
+                    this.sell.error = e.response.data.error;
+                }
+                
+                this.sell.loading = false;
             }, async sellCargo(symbol, quantity) {
                 this.sell.loading = true;
                 this.sell.error = null;
@@ -364,7 +499,7 @@
                     
                     this.sell.reveal = false;
                 } catch(e) {
-                    this.sell.error = e.response.data.error.message;
+                    this.sell.error = e.response.data.error;
                 }
                 
                 this.sell.loading = false;

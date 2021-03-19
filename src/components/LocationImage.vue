@@ -17,6 +17,9 @@
             location: {
                 type: Object,
                 required: true
+            },
+            scale: {
+                type: Number
             }
         },
         methods: {
@@ -29,7 +32,7 @@
                     return {
                         is: Planet,
                         type: possible[Math.floor(random() * possible.length)],
-                        scale: .2 + (random() / 4)
+                        scale: this.scale || (.2 + (random() / 4))
                     };
                 }
 
@@ -37,7 +40,7 @@
                     return {
                         is: Planet,
                         type: 'barren-0',
-                        scale: .1 + (random() / 10)
+                        scale: this.scale || (.1 + (random() / 10))
                     };
                 }
                 
@@ -45,7 +48,7 @@
                     return {
                         is: Planet,
                         type: 'gas-giant-0',
-                        scale: .3 + (random() / 3)
+                        scale: this.scale || (.3 + (random() / 3))
                     };
                 }
                 
@@ -53,7 +56,7 @@
                     return {
                         is: Asteroid,
                         type: 'asteroid-' + Math.floor(random() * 6),
-                        scale: .3 + (random() / 3)
+                        scale: this.scale || (.3 + (random() / 3))
                     };
                 }
                 
@@ -61,7 +64,7 @@
                     return {
                         is: Nebula,
                         type: 'nebula-' + Math.floor(random() * 1),
-                        scale: .3 + (random() / 3)
+                        scale: this.scale || (.3 + (random() / 3))
                     };
                 }
                 
@@ -69,7 +72,7 @@
                     return {
                         is: Special,
                         type: 'wormhole',
-                        scale: .5
+                        scale: this.scale || .5
                     };
                 }
 

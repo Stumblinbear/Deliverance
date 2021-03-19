@@ -200,8 +200,6 @@
         computed: {
             purchaseLocations() {
                 return this.ship.purchaseLocations.filter(entry => {
-                    console.log(entry);
-
                     if(this.system) {
                         if(!entry.location.startsWith(this.system + '-')) {
                             return false;
