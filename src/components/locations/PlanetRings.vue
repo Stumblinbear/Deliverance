@@ -12,7 +12,7 @@
         height: 300px;
         width: 300px;
 
-        background-image: url('/assets/rings/rings-1.png');
+        background-image: url('/assets/rings/rings-0.png');
         animation: planetRingsX 3s steps(30) infinite,
                     planetRingsY 12s steps(4) infinite;
 
@@ -29,7 +29,7 @@
         props: {
             type: {
                 type: String,
-                default: 'rings-1'
+                default: 'rings-0'
             }, scale: {
                 type: Number,
                 default: 1

@@ -1,15 +1,15 @@
 <template>
     <div
-        class="asteroid"
-        :style="'margin: ' + ((100 * scale) - 100) / 2 + 'px;transform:scale(' + scale + ',' + scale + ');background-image: url(\'/assets/asteroids/' + type + '.png\')'" />
+        class="special"
+        :style="'margin: ' + ((100 * scale) - 100) / 2 + 'px;transform:scale(' + scale + ',' + scale + ');background-image: url(\'/assets/special/' + type + '.png\')'" />
 </template>
 
 <style>
-    .asteroid {
-        height: 100px;
-        width: 100px;
+    .special {
+        height: 128px;
+        width: 128px;
 
-        background-image: url('/assets/asteroids/asteroid-1.png');
+        background-image: url('/assets/special/wormhole.png');
 
         -ms-interpolation-mode: nearest-neighbor;
         image-rendering: crisp-edges;
@@ -22,7 +22,7 @@
         props: {
             type: {
                 type: String,
-                default: 'asteroid-1'
+                default: 'wormhole'
             }, scale: {
                 type: Number,
                 default: 1

@@ -22,6 +22,15 @@
                     {{ location.symbol }}
                 </v-list-item-subtitle>
             </v-list-item-content>
+
+            <v-list-item-content v-if="location.symbol != origin">
+                <v-list-item-title v-if="speed">
+                    ~{{ Math.floor((((getDistance(location, originLocation) * 15) / speed) + 60) / 60) }} Minutes
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                    ~{{ Math.round((getDistance(location, originLocation) / 4)) + (location.type == 'PLANET' ? 2 : 0) + 1 }} Fuel
+                </v-list-item-subtitle>
+            </v-list-item-content>
             
             <v-btn
                     small depressed color="primary"
@@ -42,6 +51,10 @@
             origin: {
                 type: String,
                 required: true
+            },
+            speed: {
+                type: Number,
+                default: null
             }
         },
         chimera: {

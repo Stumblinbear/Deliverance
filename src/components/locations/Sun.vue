@@ -10,7 +10,7 @@
         height: 200px;
         width: 200px;
 
-        background-image: url('/assets/sun/sun-1.png');
+        background-image: url('/assets/sun/sun-0.png');
         animation: sunX 6s steps(60) infinite,
                     sunY 24s steps(4) infinite;
 
@@ -27,7 +27,7 @@
         props: {
             type: {
                 type: String,
-                default: 'sun-1'
+                default: 'sun-0'
             }, scale: {
                 type: Number,
                 default: 1

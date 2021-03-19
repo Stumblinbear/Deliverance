@@ -90,7 +90,7 @@
 </template>
 
 <script>
-    import Sun from '@/components/Sun.vue';
+    import Sun from '@/components/locations/Sun.vue';
     import ShipListItem from '@/components/ShipListItem.vue';
 
     export default {

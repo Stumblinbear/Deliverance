@@ -49,7 +49,7 @@
 <script>
     import orbitalMixin from '@/utils/orbital';
 
-    import Sun from '@/components/Sun.vue';
+    import Sun from '@/components/locations/Sun.vue';
     import LocationImage from '@/components/LocationImage.vue';
 
     export default {

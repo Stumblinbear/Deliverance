@@ -1,24 +1,24 @@
 <template>
-    <div>
-        <div v-if="!locations.data">
-            <v-skeleton-loader type="image" />
+    <div v-if="!system.data">
+        <v-skeleton-loader type="image" />
 
-            <v-container>
-                <v-skeleton-loader type="heading" class="mt-4" />
-            </v-container>
-        </div>
-        <v-sheet v-else
+        <v-container>
+            <v-skeleton-loader type="heading" class="mt-4" />
+        </v-container>
+    </div>
+    <div v-else>
+        <v-sheet
                 rounded color="black" class="mb-5">
             <v-row class="system-view"
                     align="center" justify="space-around"
                     no-gutters>
                 <sun />
                 
-                <v-col v-for="(location, j) in sortOrbits(locations.data.locations)" :key="'location-' + j"
+                <v-col v-for="(location, j) in sortOrbits(system.data.system.locations)" :key="'location-' + j"
                         class="text-center">
                     <location-image :location="location" class="mx-auto" />
                     <div class="pt-4">
-                        <small>{{ location.symbol }}</small>
+                        <small>{{ location.name }}</small>
                         <br />
                         <small>{{ parseFloat(getDistance(location).toFixed(1)) }} DU</small>
                     </div>
@@ -31,7 +31,7 @@
                 <v-col
                         cols="12" sm="9"
                         class="text-h3 text-center text-sm-left">
-                    Omicron Eridani
+                    {{ system.data.system.name }}
                 </v-col>
 
                 <v-col cols="12" sm="3">
@@ -93,12 +93,12 @@
                             v-for="(location, i) in shipLocations.locations" :key="'location-' + i"
                             cols="12" md="6">
                         <v-card>
-                            <v-list-item two-line v-if="locations.data">
+                            <v-list-item two-line v-if="system.data.system">
                                 <v-list-item-avatar rounded="0">
-                                    <location-image :location="locations.data.locations.find(loc => loc.symbol == location.symbol)" />
+                                    <location-image :location="system.data.system.locations.find(loc => loc.symbol == location.symbol)" />
                                 </v-list-item-avatar>
                                 <v-list-item-content>
-                                    <v-list-item-title class="headline">{{ locations.data.locations.find(loc => loc.symbol == location.symbol).name }}</v-list-item-title>
+                                    <v-list-item-title class="headline">{{ system.data.system.locations.find(loc => loc.symbol == location.symbol).name }}</v-list-item-title>
                                     <v-list-item-subtitle>{{ location.symbol }}</v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
@@ -168,7 +168,7 @@
 <script>
     import orbitalMixin from '@/utils/orbital';
 
-    import Sun from '@/components/Sun.vue';
+    import Sun from '@/components/locations/Sun.vue';
     import LocationImage from '@/components/LocationImage.vue';
     import Shipyard from '@/components/Shipyard.vue';
     import ShipListItem from '@/components/ShipListItem.vue';
@@ -184,10 +184,10 @@
                     interval: 1000 * 10
                 }
             },
-            locations() {
+            system() {
                 return {
-                    key: this.$store.state.username + '-system-' + this.$route.params.id,
-                    url: '/game/systems/' + this.$route.params.id + '/locations'
+                    key: 'system-' + this.$route.params.id,
+                    url: '/game/systems/' + this.$route.params.id
                 }
             }
         },

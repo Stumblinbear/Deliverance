@@ -4,9 +4,11 @@
 </template>
 
 <script>
-    import Sun from './Sun.vue';
-    import Planet from './Planet.vue';
-    import Asteroid from './Asteroid.vue';
+    import Sun from './locations/Sun.vue';
+    import Planet from './locations/Planet.vue';
+    import Asteroid from './locations/Asteroid.vue';
+    import Nebula from './locations/Nebula.vue';
+    import Special from './locations/Special.vue';
 
     import seedRandom from 'seedrandom';
 
@@ -22,7 +24,7 @@
                 const random = seedRandom(symbol);
 
                 if(type == 'PLANET') {
-                    let possible = [ 'dry-1', 'continental-1', 'lava-1' ];
+                    let possible = [ 'dry-0', 'continental-0', 'lava-0' ];
 
                     return {
                         is: Planet,
@@ -34,7 +36,7 @@
                 if(type == 'MOON') {
                     return {
                         is: Planet,
-                        type: 'barren-1',
+                        type: 'barren-0',
                         scale: .1 + (random() / 10)
                     };
                 }
@@ -42,7 +44,7 @@
                 if(type == 'GAS_GIANT') {
                     return {
                         is: Planet,
-                        type: 'gas-giant-1',
+                        type: 'gas-giant-0',
                         scale: .3 + (random() / 3)
                     };
                 }
@@ -52,6 +54,22 @@
                         is: Asteroid,
                         type: 'asteroid-' + Math.floor(random() * 6),
                         scale: .3 + (random() / 3)
+                    };
+                }
+                
+                if(type == 'NEBULA') {
+                    return {
+                        is: Nebula,
+                        type: 'nebula-' + Math.floor(random() * 1),
+                        scale: .3 + (random() / 3)
+                    };
+                }
+                
+                if(type == 'WORMHOLE') {
+                    return {
+                        is: Special,
+                        type: 'wormhole',
+                        scale: .5
                     };
                 }
 
