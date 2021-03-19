@@ -60,7 +60,7 @@
             <v-btn
                     depressed color="primary"
                     :loading="loading || maxCredits == null"
-                    :disabled="minimumPrice > maxCredits"
+                    :disabled="!minimumPrice || minimumPrice > maxCredits"
                     @click="reveal = true">
                 Purchase
             </v-btn>
@@ -180,8 +180,7 @@
         mixins: [ abbreviate ],
         props: {
             ship: {
-                type: Object,
-                required: true
+                type: Object
             }, system: {
                 type: String
             }, location: {
@@ -189,8 +188,7 @@
             },
 
             maxCredits: {
-                type: Number,
-                required: true,
+                type: Number
             }
         },
         data: () => ({
@@ -202,6 +200,8 @@
         computed: {
             purchaseLocations() {
                 return this.ship.purchaseLocations.filter(entry => {
+                    console.log(entry);
+
                     if(this.system) {
                         if(!entry.location.startsWith(this.system + '-')) {
                             return false;
@@ -223,7 +223,7 @@
             },
             purchaseList() {
                 return [ null, null, null ].map((v, i) => {
-                    return this.purchaseLocations[i] ?? null;
+                    return i < this.purchaseLocations.length ? this.purchaseLocations[i] : null;
                 })
             }
         },

@@ -5,7 +5,7 @@
         <v-skeleton-loader
             class="mb-2" type="list-item-avatar-two-line" />
     </div>
-    <v-alert v-else-if="market.data.planet.marketplace.length == 0"
+    <v-alert v-else-if="market.data.location.marketplace.length == 0"
             type="error" tile>
         No market data could be found.
     </v-alert>
@@ -128,7 +128,7 @@
         computed: {
             marketEntries() {
                 const entries = [
-                    ...(this.market.data.planet.marketplace.filter(entry => this.cargo.some(cargoEntry => cargoEntry.good == entry.symbol)))
+                    ...(this.market.data.location.marketplace.filter(entry => this.cargo.some(cargoEntry => cargoEntry.good == entry.symbol)))
                 ];
 
                 entries.sort((a, b) => a.symbol.localeCompare(b.symbol));

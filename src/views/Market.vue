@@ -211,7 +211,7 @@
                 for(let loc of locations) {
                     const { data } = await this.axios.get('/game/locations/' + loc + '/marketplace');
 
-                    this.locations.push(data.planet);
+                    this.locations.push(data.location);
                 }
 
                 this.loading = false;

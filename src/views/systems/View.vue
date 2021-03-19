@@ -68,7 +68,7 @@
                 </v-col>
                 <v-col v-else-if="ships.data.ships.length == 0">
                     <v-alert>
-                        You have no ships in your fleet.
+                        You have no ships in this system.
                     </v-alert>
                 </v-col>
                 <template v-else>
