@@ -94,19 +94,19 @@
                             cols="12" md="6">
                         <v-card>
                             <v-list-item two-line v-if="system.data.system">
-                                <v-list-item-avatar rounded="0">
-                                    <location-image :location="system.data.system.locations.find(loc => loc.symbol == location.symbol)" />
-                                </v-list-item-avatar>
                                 <v-list-item-content>
-                                    <v-list-item-title class="headline">{{ system.data.system.locations.find(loc => loc.symbol == location.symbol).name }}</v-list-item-title>
+                                    <v-list-item-title class="headline">{{ location.name }}</v-list-item-title>
                                     <v-list-item-subtitle>{{ location.symbol }}</v-list-item-subtitle>
                                 </v-list-item-content>
+                                
+                                <location-image :location="location" />
                             </v-list-item>
 
                             <v-divider />
 
                             <ship-list-item v-for="(ship, j) in location.ships" :key="'location-' + i + '-' + j"
                                 :ship="ship"
+                                :location="location"
                                 @refresh="ships.reload(true)" />
                         </v-card>
                     </v-col>
@@ -200,6 +200,11 @@
         }),
         computed: {
             shipLocations() {
+                const locationMap = this.system.data.system.locations.reduce((acc, location) => {
+                    acc[location.symbol] = location;
+                    return acc;
+                }, { });
+
                 const locations = [];
 
                 const inTransit = [];
@@ -217,8 +222,13 @@
                     }
 
                     if(location == null) {
+                        const symbol = ship.location;
+
                         location = {
-                            symbol: ship.location,
+                            symbol,
+                            type: locationMap[symbol].type,
+                            name: locationMap[symbol].name,
+                            locations: locationMap[symbol],
                             ships: [ ]
                         };
                     }

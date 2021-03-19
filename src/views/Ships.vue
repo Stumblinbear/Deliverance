@@ -1,12 +1,12 @@
 <template>
     <v-container>
-        <v-alert v-if="ships.error"
+        <v-alert v-if="ships.error || systems.error"
                 prominent type="error">
-            {{ ships }}
+            {{ ships.error || systems.error }}
         </v-alert>
         <v-row v-else
                 justify="center">
-            <v-col v-if="!ships.data">
+            <v-col v-if="!ships.data || !systems.data">
                 <v-row>
                     <v-col cols="12" md="6">
                         <v-card>
@@ -61,11 +61,11 @@
                     <v-card>
                         <v-list>
                             <v-list-item>
-                                <v-list-item-avatar rounded="0">
-                                    <sun :scale=".3" />
-                                </v-list-item-avatar>
+                                <div class="mr-4">
+                                    <sun :scale=".27" />
+                                </div>
                                 <v-list-item-content>
-                                    <v-list-item-title class="headline">{{ system.symbol }}</v-list-item-title>
+                                    <v-list-item-title class="headline">{{ system.name }}</v-list-item-title>
                                 </v-list-item-content>
                                 <v-list-item-action>
                                     <v-btn small depressed color="primary" :to="'/systems/' + system.symbol">
@@ -79,6 +79,7 @@
                             <ship-list-item
                                 v-for="(ship, j) in system.ships" :key="'system-' + i + '-' + j"
                                 :ship="ship"
+                                :location="system.locations[ship.location]"
                                 dense
                                 @refresh="ships.reload(true)" />
                         </v-list>
@@ -102,16 +103,27 @@
                     url: '/users/' + this.$store.state.username + '/ships',
                     interval: 1000 * 30
                 }
+            },
+            systems() {
+                return {
+                    key: this.$store.state.username + '-systems',
+                    url: '/game/systems'
+                }
             }
         },
         computed: {
             shipSystems() {
+                const systemMap = this.systems.data.systems.reduce((acc, system) => {
+                    acc[system.symbol] = system;
+                    return acc;
+                }, { });
+
                 const systems = [];
 
                 const inTransit = [];
 
                 let system = null;
-                for(let ship of [ ...this.ships.data.ships ].sort((a, b) => a.type.localeCompare(b.type))) {
+                for(let ship of [ ...this.ships.data.ships ].sort((a, b) => a.location.localeCompare(b.location))) {
                     if(!ship.location) {
                         inTransit.push(ship);
                         continue;
@@ -123,8 +135,15 @@
                     }
 
                     if(system == null) {
+                        const symbol = ship.location.split('-')[0];
+
                         system = {
-                            symbol: ship.location.split('-')[0],
+                            symbol,
+                            name: systemMap[symbol].name,
+                            locations: systemMap[symbol].locations.reduce((acc, location) => {
+                                acc[location.symbol] = location;
+                                return acc;
+                            }, { }),
                             ships: [ ]
                         };
                     }

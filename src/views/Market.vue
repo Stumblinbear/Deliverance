@@ -64,10 +64,6 @@
                             <v-list-item
                                     v-for="[ symbol, entry ] in Object.entries(bestBuy)" :key="symbol"
                                     two-line>
-                                <v-list-item-avatar rounded="0">
-                                    <location-image :location="entry.location" />
-                                </v-list-item-avatar>
-
                                 <v-list-item-content>
                                     <v-list-item-title>
                                         {{ prettifyEnum(symbol) }}
@@ -76,6 +72,8 @@
                                         {{ abbreviate(entry.quantityAvailable) }} Available at {{ abbreviate(entry.pricePerUnit) }} Credits each on {{ entry.location.symbol }}
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
+                                
+                                <location-image :location="entry.location" />
                             </v-list-item>
                         </v-list>
                     </v-card>
@@ -93,10 +91,6 @@
                             <v-list-item
                                     v-for="[ symbol, entry ] in Object.entries(bestSell)" :key="symbol"
                                     two-line>
-                                <v-list-item-avatar rounded="0">
-                                    <location-image :location="entry.location" />
-                                </v-list-item-avatar>
-
                                 <v-list-item-content>
                                     <v-list-item-title>
                                         {{ prettifyEnum(symbol) }}
@@ -105,6 +99,8 @@
                                         {{ abbreviate(entry.pricePerUnit) }} Credits each on {{ entry.location.symbol }}
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
+                                
+                                <location-image :location="entry.location" />
                             </v-list-item>
                         </v-list>
                     </v-card>

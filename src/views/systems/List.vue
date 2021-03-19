@@ -16,13 +16,13 @@
                     <v-col class="shrink">
                         <sun :scale=".3" />
                     </v-col>
-                    <v-col class="text-h5">
+                    <v-col class="pl-0 text-h5">
                         {{ system.name }}
                     </v-col>
                     <v-col class="shrink">
                         <v-btn class="float-right"
-                            depressed color="primary"
-                            :to="'/systems/' + system.symbol">
+                                depressed color="primary"
+                                :to="'/systems/' + system.symbol">
                             View
                         </v-btn>
                     </v-col>

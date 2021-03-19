@@ -48,7 +48,7 @@
                         no-gutters
                         align="center"
                         class="flex-nowrap fill-height">
-                    <v-btn
+                    <v-btn v-if="location && location.type == 'WORMHOLE'"
                             large tile
                             elevation="0"
                             color="warning"
