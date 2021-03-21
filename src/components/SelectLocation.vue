@@ -61,7 +61,7 @@
             locations() {
                 return {
                     key: this.$store.state.username + '-system-' + this.origin.split('-', 2)[0],
-                    url: '/game/systems/' + this.origin + '/locations',
+                    url: '/game/systems/' + this.origin.split('-', 2)[0] + '/locations',
                     interval: 1000 * 60
                 }
             }
