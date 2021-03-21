@@ -124,7 +124,7 @@
                         
                         <v-card-text class="pa-0">
                             <select-location
-                                :origin="ship.location.split('-', 2)[0]"
+                                :origin="ship.location"
                                 :speed="ship.speed"
                                 @select="moveShip" />
                         </v-card-text>

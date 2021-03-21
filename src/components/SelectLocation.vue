@@ -60,7 +60,7 @@
         chimera: {
             locations() {
                 return {
-                    key: this.$store.state.username + '-system-' + this.origin,
+                    key: this.$store.state.username + '-system-' + this.origin.split('-', 2)[0],
                     url: '/game/systems/' + this.origin + '/locations',
                     interval: 1000 * 60
                 }
