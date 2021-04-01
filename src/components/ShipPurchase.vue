@@ -37,8 +37,10 @@
 
             <span v-for="i in ship.speed" :key="'speed-' + i"
                 class="pa-2 mr-1 primary rounded-circle d-inline-block" />
-            <span v-for="i in (3 - ship.speed)" :key="'speed-' + (ship.speed + i)"
-                class="pa-2 mr-1 grey rounded-circle d-inline-block" />
+            <template v-if="ship.speed < 3">
+                <span v-for="i in (3 - ship.speed)" :key="'speed-' + (ship.speed + i)"
+                    class="pa-2 mr-1 grey rounded-circle d-inline-block" />
+            </template>
         </v-list-item>
         <v-list-item v-for="[ name, id ] in [ ['Max Cargo', 'maxCargo'], ['Plating', 'plating'], ['Weapons', 'weapons'] ]" :key="id">
             <div>{{ name }}</div>
@@ -60,7 +62,7 @@
             <v-btn
                     depressed color="primary"
                     :loading="loading || maxCredits == null"
-                    :disabled="!minimumPrice || minimumPrice > maxCredits"
+                    :disabled="minimumPrice > maxCredits"
                     @click="reveal = true">
                 Purchase
             </v-btn>
