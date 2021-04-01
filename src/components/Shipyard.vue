@@ -59,10 +59,10 @@
     import ShipPurchase from '@/components/ShipPurchase.vue';
 
     const MANUFACTURERS = {
-        'Electrum': { info: 'Specializing in quick, agile fighter crafts. \'Cause you\'ve got a need for speed.' },
-        'Gravager': { info: 'Take \'yer shit where \'yer shit need t\' be took.' },
-        'Jackshaw': { info: 'Spacecraft at affordable rates. (disclaimer: not responsible for spontneous combustion)' },
-        'Zetra': { info: 'Balanced spaceships at unbalanced prices.' },
+        'ELECTRUM': { info: 'Specializing in quick, agile fighter crafts. \'Cause you\'ve got a need for speed.' },
+        'GRAVAGER': { info: 'Take \'yer shit where \'yer shit need t\' be took.' },
+        'JACKSHAW': { info: 'Spacecraft at affordable rates. (disclaimer: not responsible for spontneous combustion)' },
+        'ZETRA': { info: 'Balanced spaceships at unbalanced prices.' },
     };
 
     export default {
@@ -100,7 +100,7 @@
                         manufacturer = {
                             id,
                             name: ship.manufacturer,
-                            info: MANUFACTURERS[id].info,
+                            info: MANUFACTURERS[id]?.info || 'No information has been ascertained on this manufacturer.',
                             ships: [ ]
                         };
                     }
