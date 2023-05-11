@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["home"],{bb51:function(e,t,n){"use strict";n.r(t);var l=function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",[n("v-alert",{staticClass:"text-center"},[e._v(" The Home UI is currently under development. Please come back later. ")])],1)},r=[],a=n("2877"),c=n("6544"),s=n.n(c),o=n("0798"),u={},i=Object(a["a"])(u,l,r,!1,null,null,null);t["default"]=i.exports;s()(i,{VAlert:o["a"]})}}]);
-//# sourceMappingURL=home.c4a93c4f.js.map
