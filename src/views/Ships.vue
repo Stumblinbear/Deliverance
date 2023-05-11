@@ -123,7 +123,7 @@
                 const inTransit = [];
 
                 let system = null;
-                for(let ship of [ ...this.ships.data.ships ].sort((a, b) => a.location.localeCompare(b.location))) {
+                for(let ship of [ ...this.ships.data.ships ].sort((a, b) => a.location?.localeCompare(b.location))) {
                     if(!ship.location) {
                         inTransit.push(ship);
                         continue;
